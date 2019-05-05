@@ -1,0 +1,9 @@
+name: PCNRTP
+main: net.peacefulcraft.rtp.RTP
+version: 1.0
+api-version: 1.14
+
+commands:
+    rtp:
+      description: Random teleport every 1 minute
+      usage: /<command> To TRTP
