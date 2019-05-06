@@ -5,6 +5,8 @@ import java.util.UUID;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.WorldType;
+import org.bukkit.World.Environment;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -26,6 +28,12 @@ public class RTP implements CommandExecutor{
 		}
 		
 		Player p = (Player) arg0;
+		
+		if(p.getLocation().getWorld().getEnvironment().equals(Environment.NETHER)) {
+			p.sendMessage(ChatColor.BLUE + "Sorry, you can't RTP in the nether.");
+			return true;
+		}
+		
 		if(usage.get(p.getUniqueId()) == null || (System.currentTimeMillis() - usage.get(p.getUniqueId())) > 60000) {
 		
 			double x, y, z;
