@@ -10,3 +10,6 @@ commands:
     nv:
       description: Night Vision
       usage: /<command> To toggle night vision
+    terminator:
+      description: Exterminator
+      usage: /<command>
