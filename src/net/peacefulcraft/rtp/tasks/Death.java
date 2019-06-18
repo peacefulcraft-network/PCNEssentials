@@ -3,6 +3,7 @@ package net.peacefulcraft.rtp.tasks;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -13,6 +14,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Fish;
 import org.bukkit.entity.Monster;
+
+import net.peacefulcraft.rtp.PCNEssentials;
 
 public class Death implements Runnable {
 		
@@ -30,33 +33,30 @@ public class Death implements Runnable {
 		if(entityList.size() > 0) {
 			
 			Entity target = entityList.get(0);
-			if(target.getLocation() != null) {
+			if(target != null) {
+
+				//Load the chunk
+				Chunk chunk = world.getChunkAt(target.getLocation());
+				Entity[] localEntities = chunk.getEntities();
 				
-				Location loc = target.getLocation();
-			
-				if(world.isChunkLoaded(loc.getBlockX(), loc.getBlockZ())){
+				//Kill all unimportant things in that chunk while we have it
+				for(Entity e : localEntities) {
 					
-					entityList.remove(target);			
-				
-				}else {
-				
-					Chunk chunk = world.getChunkAt(loc);
-					Entity[] localEntities = chunk.getEntities();
-					
-					for(Entity e : localEntities) {
-						if(e instanceof Monster || e instanceof Bat || e instanceof Fish) {
-							Damageable ed = (Damageable) e;
-							ed.damage(20000);
-							entityList.remove(e);
-							
-							if(kills.keySet().contains(e.getType())) {
-								kills.put(e.getType(), 1 + kills.get(e.getType()));
-							}else {
-								kills.put(e.getType(), 1);
-							}
-							
+					if(e instanceof Monster || e instanceof Bat || e instanceof Fish) {
+						Damageable ed = (Damageable) e;
+						ed.damage(20000);
+						entityList.remove(e);
+						
+						if(kills.keySet().contains(e.getType())) {
+							kills.put(e.getType(), 1 + kills.get(e.getType()));
+						}else {
+							kills.put(e.getType(), 1);
 						}
+						
 					}
+					
+					//explicitly release the chunk
+					chunk = null;
 					
 				}
 			
@@ -64,15 +64,16 @@ public class Death implements Runnable {
 			
 		}else {
 			
+			//cache entities
 			List<Entity> loadedEntities = world.getEntities();			
 			for(Entity e : loadedEntities) {
 				
-				Location loc = e.getLocation();
-				if(!world.isChunkLoaded(loc.getBlockX(), loc.getBlockZ())) {
+				if(e.getTicksLived() > 1200) {
 					entityList.add(e);
 				}
 				
 			}
+			PCNEssentials.getPluginInstance().getServer().getLogger().log(Level.INFO, entityList.size() + " targets");
 			
 		}
 

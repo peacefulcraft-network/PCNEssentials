@@ -19,8 +19,8 @@ public class PCNEssentials extends JavaPlugin{
 		this.getCommand("nv").setExecutor(new NightVision());
 		this.getCommand("terminator").setExecutor(new Terminator());
 		
-		Death.setWorld(this.getServer().getWorld("world"));
-		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Death(), 250, 250);
+		//Death.setWorld(this.getServer().getWorld("world"));
+		//this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Death(), 250, 250);
 	}
 	
 	public void onDisable() {
