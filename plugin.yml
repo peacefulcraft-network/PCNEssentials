@@ -1,4 +1,4 @@
-name: PCNRTP
+name: PCNEssentials
 main: net.peacefulcraft.rtp.PCNEssentials
 version: 1.0
 api-version: 1.14
@@ -10,6 +10,3 @@ commands:
     nv:
       description: Night Vision
       usage: /<command> To toggle night vision
-    terminator:
-      description: Exterminator
-      usage: /<command>

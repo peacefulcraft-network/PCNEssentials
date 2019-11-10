@@ -6,7 +6,6 @@ import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.WorldType;
 import org.bukkit.World.Environment;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
