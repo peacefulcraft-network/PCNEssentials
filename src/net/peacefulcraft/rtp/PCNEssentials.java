@@ -13,7 +13,13 @@ public class PCNEssentials extends JavaPlugin{
 	}
 		
 	public void onEnable() {
+		this.saveDefaultConfig();
+		
+		if(this.getConfig().getBoolean("rtp")) {
 			this.getCommand("rtp").setExecutor(new RTP());
+		}
+		
+		if(this.getConfig().getBoolean("nv")) {
 			this.getCommand("nv").setExecutor(new NightVision());
 		}
 	}
