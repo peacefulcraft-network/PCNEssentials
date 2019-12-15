@@ -62,6 +62,7 @@ public class RTP implements CommandExecutor{
 			
 			p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 2000, 255));
 			p.teleport(new Location(p.getWorld(), x, y, z));
+			//PaperLib.teleportAsync(p, new Location(p.getWorld(), x, y, z));
 			
 			usage.put(p.getUniqueId(), System.currentTimeMillis());
 			
