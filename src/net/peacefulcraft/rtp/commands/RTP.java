@@ -41,12 +41,32 @@ public class RTP implements CommandExecutor{
 			return true;
 		}
 		
+		int base = 3000;	// minimum coordinate generated
+		int range = 15000;	// maximum coordinate generated
+		if(arg3.length > 1) {
+			if(arg3[0].equalsIgnoreCase("1.13")) {
+				base = 3000;
+				range = 15000;
+			}else if(arg3[0].equalsIgnoreCase("1.14")){
+				base = 18000;
+				range = 7000;
+			}else if(arg3[0].equalsIgnoreCase("1.15")) {
+				base = 25000;
+				range = 5000;
+			}else {
+				p.sendMessage(ChatColor.BLUE + "Invalid version. Use 1.13, 1.14, or 1.15");
+				return true;
+			}
+		}
+		
 		if(usage.get(p.getUniqueId()) == null || (System.currentTimeMillis() - usage.get(p.getUniqueId())) > 60000) {
 			
+			
+			
 			int x, y, z;
-			x = (int) Math.round(3000 + (Math.random() * 7000));
+			x = (int) Math.round(base + (Math.random() * range));
 			y = 250;
-			z = (int) Math.round(3000 + (Math.random() * 7000));
+			z = (int) Math.round(base + (Math.random() * range));
 			
 			if(Math.random() > 0.5) {
 				x *= -1;
