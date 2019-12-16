@@ -43,7 +43,7 @@ public class RTP implements CommandExecutor{
 		
 		int base = 3000;	// minimum coordinate generated
 		int range = 15000;	// maximum coordinate generated
-		if(arg3.length > 1) {
+		if(arg3.length > 0) {
 			if(arg3[0].equalsIgnoreCase("1.13")) {
 				base = 3000;
 				range = 15000;
@@ -90,7 +90,7 @@ public class RTP implements CommandExecutor{
 			
 		}else {
 			p.sendMessage(ChatColor.RED + "Sorry, you're on cool down for " + 
-					((System.currentTimeMillis() - usage.get(p.getUniqueId())) / 1000) + " seconds.");
+					(60 - ((System.currentTimeMillis() - usage.get(p.getUniqueId())) / 1000)) + " seconds.");
 			return false;
 		}
 	}
