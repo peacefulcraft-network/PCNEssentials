@@ -1,6 +1,9 @@
 package net.peacefulcraft.rtp;
+import java.util.logging.Level;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
+import net.md_5.bungee.api.ChatColor;
 import net.peacefulcraft.rtp.commands.NightVision;
 import net.peacefulcraft.rtp.commands.RTP;;
 public class PCNEssentials extends JavaPlugin{
@@ -16,7 +19,7 @@ public class PCNEssentials extends JavaPlugin{
 		this.saveDefaultConfig();
 		
 		if(this.getConfig().getBoolean("rtp")) {
-			this.getCommand("rtp").setExecutor(new RTP());
+			this.getCommand("rtp").setExecutor(new RTP(this.getConfig()));
 		}
 		
 		if(this.getConfig().getBoolean("nv")) {
@@ -28,4 +31,7 @@ public class PCNEssentials extends JavaPlugin{
 		this.getServer().getScheduler().cancelTasks(this);
 	}
 	
+	public void logNotice(String message) {
+		this.getLogger().log(Level.INFO, ChatColor.GREEN + "[" + ChatColor.BLUE + "PCN" + ChatColor.GREEN + "]" + ChatColor.RESET + message);
+	}
 }
