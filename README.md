@@ -4,7 +4,7 @@ Custom utility and gameplay commands developed by the PeacefulCraft network.
 This plugin is avaiable to download in the releases tab and you're welcome to use it on your sever, or fork this repository and make your own changes.
 
 ### Configuration Structure
-
+RTP ranges can be named whatever you wish. The range minimiums and maximiums can overlap.
 ```YAML
 nv:
   enabled: true     # Enable NV Command
@@ -18,7 +18,7 @@ rtp:
     medium:         # Define another RTP range called 'medium'
       min: 10000
       max: 20000
-    large:
+    "super.special&R@nge@me"
       min: 20000
       max: 30000
 ```
