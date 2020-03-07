@@ -1,9 +1,7 @@
 package net.peacefulcraft.rtp.commands;
 
-import java.util.Map;
 import java.util.HashMap;
 import java.util.UUID;
-import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -11,6 +9,7 @@ import org.bukkit.World.Environment;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -25,23 +24,23 @@ public class RTP implements CommandExecutor{
 	
 	public RTP(FileConfiguration c) {
 		this.usage = new HashMap<UUID, Long>();
-		
-		if (c.contains("rtp.ranges")) {
-			for(Map<?, ?> range : c.getMapList("rtp.ranges")) {
-				if(!range.containsKey("min")) { continue; }
-				if(!range.containsKey("max")) { continue; }
+		this.ranges = new HashMap<String, RTPRadiusLimit>();
 
-				String name = "";
-				for(Object key : range.keySet()) {
-					name = (String) key;
-				}
-				int min = (Integer) range.get("min");
-				int max = (Integer) range.get("max");
+		if (c.getConfigurationSection("rtp").contains("ranges")) {
+			for(String range : c.getConfigurationSection("rtp.ranges").getKeys(false)) {
+				ConfigurationSection cfgs = c.getConfigurationSection("rtp.ranges." + range);
+				if(!cfgs.contains("min")) { continue; }
+				if(!cfgs.contains("max")) { continue; }
 
-				ranges.put(name, new RTPRadiusLimit(min, max));
-				PCNEssentials.getPluginInstance().logNotice("Registered RTP Range " + name + " [" + min + ", " + max + "]");
+				int min = cfgs.getInt("min");
+				int max = cfgs.getInt("max");
+
+				ranges.put(range, new RTPRadiusLimit(min, max));
+				PCNEssentials.getPluginInstance().logNotice("Registered RTP Range " + range + " [" + min + ", " + max + "]");
 			}
 		}
+
+		PCNEssentials.getPluginInstance().logNotice(ranges.size() + " RTP ranges loaded");
 	}
 
 	public boolean onCommand(CommandSender arg0, Command arg1, String arg2, String[] arg3) {
@@ -76,9 +75,8 @@ public class RTP implements CommandExecutor{
 			break;
 		}
 		if(arg3.length > 0) {
-			String tryName = arg3[0];
-			if(ranges.containsKey(tryName)) {
-				range = tryName;
+			if(ranges.containsKey(arg3[0])) {
+				range = arg3[0];
 			} else {
 				arg0.sendMessage(ChatColor.BLUE + "[" + ChatColor.GREEN  + "PCN" + ChatColor.BLUE + "] " + ChatColor.RESET + " Invalid RTP range. Valid ranges are:");
 				for(String name : ranges.keySet()) {
@@ -92,6 +90,7 @@ public class RTP implements CommandExecutor{
 			
 			int x = 0, y = 250, z = 0;
 			RTPRadiusLimit limit = ranges.get(range);
+
 			if(Math.random() > 0.5) {
 				x = (int) Math.round(Math.random() * (limit.maxRadius - limit.minRadius));
 				z = (int) Math.round(limit.minRadius + (Math.random() * (limit.maxRadius - limit.minRadius)));
@@ -110,7 +109,7 @@ public class RTP implements CommandExecutor{
 			}
 			
 			p.sendMessage(ChatColor.BLUE + "You've been teleported to (" + x + ", " + y + ", " + z + ")");
-			PCNEssentials.getPluginInstance().getLogger().log(Level.INFO, p.getName() + " Teleported to " + x + ", " + y + ", " + z);
+			PCNEssentials.getPluginInstance().logNotice(p.getName() + " Teleported to " + x + ", " + y + ", " + z);
 			
 			p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 2000, 255));
 			p.teleport(new Location(p.getWorld(), x, y, z));

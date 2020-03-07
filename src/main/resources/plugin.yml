@@ -1,0 +1,15 @@
+name: PCNEssentials
+main: net.peacefulcraft.rtp.PCNEssentials
+version: 1.0
+api-version: 1.15
+
+commands:
+    rtp:
+      description: Random teleport every 1 minute
+      usage: /<command> To TRTP
+    nv:
+      description: Night Vision
+      usage: /<command> To toggle night vision
+    pcn-reload:
+      description: Reload Plugin
+      usage: /<command> To reload the plugin configuration file

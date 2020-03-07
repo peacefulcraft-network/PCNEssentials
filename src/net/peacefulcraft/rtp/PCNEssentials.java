@@ -5,7 +5,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import net.md_5.bungee.api.ChatColor;
 import net.peacefulcraft.rtp.commands.NightVision;
-import net.peacefulcraft.rtp.commands.RTP;;
+import net.peacefulcraft.rtp.commands.RTP;
+import net.peacefulcraft.rtp.commands.Reload;;
 public class PCNEssentials extends JavaPlugin{
 
 	private static PCNEssentials p;
@@ -17,14 +18,18 @@ public class PCNEssentials extends JavaPlugin{
 		
 	public void onEnable() {
 		this.saveDefaultConfig();
-		
-		if(this.getConfig().getBoolean("rtp")) {
+
+		if(this.getConfig().getBoolean("rtp.enabled")) {
 			this.getCommand("rtp").setExecutor(new RTP(this.getConfig()));
+			logNotice("RTP: Enabled");
 		}
 		
-		if(this.getConfig().getBoolean("nv")) {
+		if(this.getConfig().getBoolean("nv.enabled")) {
 			this.getCommand("nv").setExecutor(new NightVision());
+			logNotice("NV: Enabled");
 		}
+
+		this.getCommand("pcn-reload").setExecutor(new Reload());
 	}
 	
 	public void onDisable() {
