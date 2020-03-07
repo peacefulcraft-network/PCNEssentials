@@ -27,6 +27,6 @@ rtp:
 `pcn.staff` : Access to `/pcn-reload`
 
 ### Commands
-`/nv` : Toggles Night Vision
-`/rtp [rtp range name]` : Random teleport within the bounds of that teleport range
-`/pcn-reload` : Reload random teleport ranges from config file
+- `/nv` : Toggles Night Vision
+- `/rtp [rtp range name]` : Random teleport within the bounds of that teleport range
+- `/pcn-reload` : Reload random teleport ranges from config file
