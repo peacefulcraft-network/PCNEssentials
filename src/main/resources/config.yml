@@ -1,2 +1,8 @@
 rtp: true
 nv: true
+
+rtp:
+  ranges:
+    default:
+      min: 0
+      max: 10000
