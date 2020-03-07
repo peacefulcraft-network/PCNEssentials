@@ -7,9 +7,6 @@ import org.bukkit.command.CommandSender;
 import net.md_5.bungee.api.ChatColor;
 import net.peacefulcraft.rtp.PCNEssentials;
 
-/**
- * Reload
- */
 public class Reload implements CommandExecutor{
 
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
