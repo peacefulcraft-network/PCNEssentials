@@ -24,7 +24,7 @@ rtp:
 ```
 
 ### Permission Nodes
-`pcn.staff` : Access to `/pcn-reload`
+- `pcn.staff` : Access to `/pcn-reload`
 
 ### Commands
 - `/nv` : Toggles Night Vision
