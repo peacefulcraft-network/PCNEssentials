@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -44,6 +45,9 @@ public class Medals implements CommandExecutor {
         lore.add(ChatColor.GREEN + arg3[2]);
 
         third.setItemMeta(meta);
+
+        third.addEnchantment(Enchantment.DEPTH_STRIDER, 15);
+        
         p.getInventory().addItem(third);
         return true;
     }
