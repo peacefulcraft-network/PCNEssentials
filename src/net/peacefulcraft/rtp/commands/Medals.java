@@ -30,31 +30,38 @@ public class Medals implements CommandExecutor {
         }
 
         String placement = null;
+        ItemStack item = null;
+        ChatColor color = null;
         if(arg3[0].equalsIgnoreCase("first")) {
             placement = "First";
+            item = new ItemStack(Material.EMERALD, 1);
+            color = ChatColor.LIGHT_PURPLE;
         } else if(arg3[0].equalsIgnoreCase("second")) {
             placement = "Second";
+            item = new ItemStack(Material.DIAMOND ,1);
+            color = ChatColor.RED;
         } else if(arg3[0].equalsIgnoreCase("third")) {
             placement = "Third";
+            item = new ItemStack(Material.GOLD_INGOT, 1);
+            color = ChatColor.GOLD;
         } else {
             p.sendMessage("Invalid placement. Valid options are: first, second, third.");
             return true;
         }
         
-        ItemStack third = new ItemStack(Material.IRON_INGOT, 1);
-        ItemMeta meta = third.getItemMeta();
+        ItemMeta meta = item.getItemMeta();
 
-        meta.setDisplayName(ChatColor.GREEN + placement + " Place Medal");
+        meta.setDisplayName(color + placement + " Place Medal");
         ArrayList<String> lore = new ArrayList<String>();
-        lore.add(ChatColor.GREEN + "Official PCN " + arg3[1] + " Medal");
-        lore.add(ChatColor.GREEN + arg3[2]);
+        lore.add(color + "Official PCN " + arg3[1] + " Medal");
+        lore.add(color + arg3[2]);
 
         meta.setLore(lore);
 
-        third.setItemMeta(meta);
-        third.addUnsafeEnchantment(Enchantment.DEPTH_STRIDER, 1);
+        item.setItemMeta(meta);
+        item.addUnsafeEnchantment(Enchantment.DEPTH_STRIDER, 1);
         
-        p.getInventory().addItem(third);
+        p.getInventory().addItem(item);
         return true;
     }
  }
