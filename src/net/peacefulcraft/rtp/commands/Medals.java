@@ -19,7 +19,12 @@ public class Medals implements CommandExecutor {
         if(!arg0.hasPermission("pcn.staff")) { return true; }
 
         Player p = (Player) arg0;
-        if(arg3[1].isEmpty() || arg3[2].isEmpty()) {
+        try{
+            if(arg3[1].isEmpty() || arg3[2].isEmpty()) {
+                p.sendMessage("Command usage: /medals [place][usage][date]");
+                return true;
+            }
+        }catch(IndexOutOfBoundsException e) {
             p.sendMessage("Command usage: /medals [place][usage][date]");
             return true;
         }
