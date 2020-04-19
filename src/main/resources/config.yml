@@ -1,7 +1,8 @@
-rtp: true
-nv: true
+nv:
+  enabled: true
 
 rtp:
+  enabled: true
   ranges:
     default:
       min: 0

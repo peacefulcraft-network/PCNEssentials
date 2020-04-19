@@ -52,11 +52,7 @@ public class RTP implements CommandExecutor{
 		if(!(arg0 instanceof Player)) {
 			return true;
 		}
-		
-		if(!(arg1.getName().equalsIgnoreCase("rtp"))) {
-			return true;
-		}
-		
+
 		Player p = (Player) arg0;
 		
 		if(p.getLocation().getWorld().getEnvironment().equals(Environment.NETHER)) {

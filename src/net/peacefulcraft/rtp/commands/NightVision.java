@@ -11,11 +11,7 @@ public class NightVision implements CommandExecutor{
 
 	public boolean onCommand(CommandSender arg0, Command arg1, String arg2, String[] arg3) {
 		if(!(arg0 instanceof Player)) {
-			return false;
-		}
-		
-		if(!(arg1.getName().equalsIgnoreCase("nv"))) {
-			return false;
+			return true;
 		}
 		
 		Player p = (Player) arg0;
