@@ -15,6 +15,8 @@ public class Reload implements CommandExecutor{
                 new RTP(PCNEssentials.getPluginInstance().getConfig())
             );
 
+            PCNEssentials.getPluginInstance().getCommand("nv").setExecutor(new NightVision());
+
             sender.sendMessage(ChatColor.GREEN + "[" + ChatColor.BLUE + "PCN" + ChatColor.GREEN + "]" + ChatColor.BLUE + "RTP Ranges Reloaded.");
         }
 
