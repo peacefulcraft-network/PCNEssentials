@@ -13,3 +13,6 @@ commands:
     pcn-reload:
       description: Reload Plugin
       usage: /<command> To reload the plugin configuration file
+    medals:
+      description: Medal command for PCN competitions.
+      usage: /<command> [place][usage][date]
