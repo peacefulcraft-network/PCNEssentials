@@ -48,12 +48,15 @@ public class Medals implements CommandExecutor {
             p.sendMessage("Invalid placement. Valid options are: first, second, third.");
             return true;
         }
+
+        String usage = arg3[1];
+        usage = usage.replace("_", " ");
         
         ItemMeta meta = item.getItemMeta();
 
         meta.setDisplayName(color + placement + " Place Medal");
         ArrayList<String> lore = new ArrayList<String>();
-        lore.add(color + "Official PCN " + arg3[1] + " Medal");
+        lore.add(color + "Official PCN " + usage + " Medal");
         lore.add(color + arg3[2]);
 
         meta.setLore(lore);
