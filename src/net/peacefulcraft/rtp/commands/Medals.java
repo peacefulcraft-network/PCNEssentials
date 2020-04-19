@@ -49,9 +49,9 @@ public class Medals implements CommandExecutor {
         lore.add(ChatColor.GREEN + "Official PCN " + arg3[1] + " Medal");
         lore.add(ChatColor.GREEN + arg3[2]);
 
-        third.setItemMeta(meta);
+        meta.addEnchant(Enchantment.DEPTH_STRIDER, 15, true);
 
-        third.addEnchantment(Enchantment.DEPTH_STRIDER, 15);
+        third.setItemMeta(meta);
         
         p.getInventory().addItem(third);
         return true;
