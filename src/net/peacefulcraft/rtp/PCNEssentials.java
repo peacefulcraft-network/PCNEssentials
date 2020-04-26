@@ -6,6 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import net.md_5.bungee.api.ChatColor;
 import net.peacefulcraft.rtp.commands.Medals;
 import net.peacefulcraft.rtp.commands.NightVision;
+import net.peacefulcraft.rtp.commands.Pickaxe;
 import net.peacefulcraft.rtp.commands.RTP;
 import net.peacefulcraft.rtp.commands.Reload;
 public class PCNEssentials extends JavaPlugin{
@@ -32,6 +33,7 @@ public class PCNEssentials extends JavaPlugin{
 
 		this.getCommand("pcn-reload").setExecutor(new Reload());
 		this.getCommand("medals").setExecutor(new Medals());
+		this.getCommand("pickaxe").setExecutor(new Pickaxe());
 	}
 	
 	public void onDisable() {
