@@ -16,3 +16,6 @@ commands:
     medals:
       description: Medal command for PCN competitions.
       usage: /<command> [place][usage][date]
+    pickaxe:
+      description: Pickaxe command for PCN competitions.
+      usage: /<command> [place]
