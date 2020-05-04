@@ -19,3 +19,6 @@ commands:
     pickaxe:
       description: Pickaxe command for PCN competitions.
       usage: /<command> [place]
+    boots:
+      description: Boots command for PCN competitions
+      usage: /<command> [place]
