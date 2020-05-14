@@ -22,3 +22,6 @@ commands:
     boots:
       description: Boots command for PCN competitions
       usage: /<command> [place]
+    crusade:
+      description: Bombards the foe with a powerful crusade.
+      usage: /<command> [player]
