@@ -107,7 +107,7 @@ public class RTP implements CommandExecutor{
 			p.sendMessage(ChatColor.BLUE + "You've been teleported to (" + x + ", " + y + ", " + z + ")");
 			PCNEssentials.getPluginInstance().logNotice(p.getName() + " Teleported to " + x + ", " + y + ", " + z);
 			
-			p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 2000, 255));
+			p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 200, 255));
 			p.teleport(new Location(p.getWorld(), x, y, z));
 			//PaperLib.teleportAsync(p, new Location(p.getWorld(), x, y, z));
 			
