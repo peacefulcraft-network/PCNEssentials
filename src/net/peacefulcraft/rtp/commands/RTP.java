@@ -118,7 +118,7 @@ public class RTP implements CommandExecutor{
 		}else {
 			p.sendMessage(ChatColor.RED + "Sorry, you're on cool down for " + 
 					(60 - ((System.currentTimeMillis() - usage.get(p.getUniqueId())) / 1000)) + " seconds.");
-			return false;
+			return true;
 		}
 	}
 	
