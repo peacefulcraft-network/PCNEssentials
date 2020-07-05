@@ -16,34 +16,20 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import net.peacefulcraft.rtp.PCNEssentials;
+import net.peacefulcraft.rtp.configuration.Configuration;
+import net.peacefulcraft.rtp.configuration.RTPRadiusLimit;
 
 public class RTP implements CommandExecutor{
 
-	private HashMap<String, RTPRadiusLimit> ranges;
 	private HashMap<UUID, Long> usage;
 	
 	public RTP(FileConfiguration c) {
 		this.usage = new HashMap<UUID, Long>();
-		this.ranges = new HashMap<String, RTPRadiusLimit>();
-
-		if (c.getConfigurationSection("rtp").contains("ranges")) {
-			for(String range : c.getConfigurationSection("rtp.ranges").getKeys(false)) {
-				ConfigurationSection cfgs = c.getConfigurationSection("rtp.ranges." + range);
-				if(!cfgs.contains("min")) { continue; }
-				if(!cfgs.contains("max")) { continue; }
-
-				int min = cfgs.getInt("min");
-				int max = cfgs.getInt("max");
-
-				ranges.put(range, new RTPRadiusLimit(min, max));
-				PCNEssentials.getPluginInstance().logNotice("Registered RTP Range " + range + " [" + min + ", " + max + "]");
-			}
-		}
-
-		PCNEssentials.getPluginInstance().logNotice(ranges.size() + " RTP ranges loaded");
 	}
 
 	public boolean onCommand(CommandSender arg0, Command arg1, String arg2, String[] arg3) {
+		HashMap<String, RTPRadiusLimit> ranges = Configuration.getRtpRanges();
+
 		if(ranges.size() < 1) {
 			arg0.sendMessage(ChatColor.BLUE + "[" + ChatColor.GREEN  + "PCN" + ChatColor.BLUE + "] " + ChatColor.RESET + "No RTP ranges configured.");
 			return true;
@@ -88,11 +74,11 @@ public class RTP implements CommandExecutor{
 			RTPRadiusLimit limit = ranges.get(range);
 
 			if(Math.random() > 0.5) {
-				x = (int) Math.round(Math.random() * (limit.maxRadius - limit.minRadius));
-				z = (int) Math.round(limit.minRadius + (Math.random() * (limit.maxRadius - limit.minRadius)));
+				x = (int) Math.round(Math.random() * (limit.getMaxRadius() - limit.getMinRadius()));
+				z = (int) Math.round(limit.getMinRadius() + (Math.random() * (limit.getMaxRadius() - limit.getMinRadius())));
 			} else {
-				x = (int) Math.round(limit.minRadius + (Math.random() * (limit.maxRadius - limit.minRadius)));
-				x = (int) Math.round(Math.random() * (limit.maxRadius - limit.minRadius));
+				x = (int) Math.round(limit.getMinRadius() + (Math.random() * (limit.getMaxRadius() - limit.getMaxRadius())));
+				x = (int) Math.round(Math.random() * (limit.getMaxRadius() - limit.getMinRadius()));
 			}
 			
 			if(Math.random() > 0.5) {
@@ -107,7 +93,8 @@ public class RTP implements CommandExecutor{
 			p.sendMessage(ChatColor.BLUE + "You've been teleported to (" + x + ", " + y + ", " + z + ")");
 			PCNEssentials.getPluginInstance().logNotice(p.getName() + " Teleported to " + x + ", " + y + ", " + z);
 			
-			p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 200, 255));
+			int resistanceDurationTicks = Configuration.getRtpResistanceDuration() * 20;
+			p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, resistanceDurationTicks, 255));
 			p.teleport(new Location(p.getWorld(), x, y, z));
 			//PaperLib.teleportAsync(p, new Location(p.getWorld(), x, y, z));
 			
@@ -119,16 +106,6 @@ public class RTP implements CommandExecutor{
 			p.sendMessage(ChatColor.RED + "Sorry, you're on cool down for " + 
 					(60 - ((System.currentTimeMillis() - usage.get(p.getUniqueId())) / 1000)) + " seconds.");
 			return true;
-		}
-	}
-	
-	public class RTPRadiusLimit {
-		private int minRadius;
-		private int maxRadius;
-
-		public RTPRadiusLimit(int minRadius, int maxRadius) {
-			this.minRadius = minRadius;
-			this.maxRadius = maxRadius;
 		}
 	}
 }
