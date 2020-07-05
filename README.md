@@ -11,14 +11,15 @@ nv:
 
 rtp:
   enabled: true     # Enable RTP Command
+  resistance_duration: 10 # seconds for resistence effect to last after teleport
   ranges:
-    "small":          # Define RTP range called 'small'
+    small:          # Define RTP range called 'small'
       min: 1000     # Set the minimium teleport radius for this range
       max: 10000    # Set the maximium teleport radius for this range
-    "medium":         # Define another RTP range called 'medium'
+    medium:         # Define another RTP range called 'medium'
       min: 10000
       max: 20000
-    "super.special&R@nge@me"
+    large
       min: 20000
       max: 30000
 ```
