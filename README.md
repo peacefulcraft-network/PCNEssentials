@@ -19,7 +19,7 @@ rtp:
     medium:         # Define another RTP range called 'medium'
       min: 10000
       max: 20000
-    large
+    large:
       min: 20000
       max: 30000
 ```
