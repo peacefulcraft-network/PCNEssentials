@@ -14,11 +14,15 @@ import net.peacefulcraft.rtp.commands.Reload;
 import net.peacefulcraft.rtp.configuration.Configuration;
 public class PCNEssentials extends JavaPlugin{
 
+	public static final String release = "0.0.2";
+
 	private static PCNEssentials p;
 		public static PCNEssentials getPluginInstance() { return p; }
 		
 	private static Configuration c;
 		public static Configuration getPluginConfig() { return c; }
+
+	public static final String messagePrefix = ChatColor.BLUE + "[" + ChatColor.GREEN  + "PCN" + ChatColor.BLUE + "] " + ChatColor.RESET;
 
 	public PCNEssentials(){
 		p = this;
@@ -40,6 +44,10 @@ public class PCNEssentials extends JavaPlugin{
 		//this.getCommand("pickaxe").setExecutor(new Pickaxe());
 		this.getCommand("pickaxe").setExecutor(new Boots());
 		this.getCommand("crusade").setExecutor(new Crusade());
+
+		UpdateCheck updateCheck = new UpdateCheck();
+		// On a healthy server, this checks every hour
+		updateCheck.runTaskTimerAsynchronously(this, 0, 72000);
 	}
 	
 	public void onDisable() {

@@ -25,7 +25,7 @@ public class Configuration {
   public Configuration(FileConfiguration c) {
     Configuration.c = c;
 
-    URL defaultConfigurationURI = getClass().getClassLoader().getResource("/main/resources/config.yml");
+    URL defaultConfigurationURI = getClass().getClassLoader().getResource("config.yml");
     File defaultConfigurationFile = new File(defaultConfigurationURI.toString());
     YamlConfiguration defaultConfiguration = YamlConfiguration.loadConfiguration(defaultConfigurationFile);
     c.setDefaults(defaultConfiguration);
