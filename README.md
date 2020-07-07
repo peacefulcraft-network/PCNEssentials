@@ -25,7 +25,7 @@ rtp:
 ```
 
 ### Permission Nodes
-- `pcn.staff` : Access to `/pcn-reload`
+- `pcn.staff` : Access to `/pcn-reload` Players with this permission will also receive update notifications. The permission is automatically given to `/op`d players.
 
 ### Commands
 - `/nv` : Toggles Night Vision
