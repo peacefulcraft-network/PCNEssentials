@@ -11,7 +11,9 @@ import net.peacefulcraft.rtp.commands.Medals;
 import net.peacefulcraft.rtp.commands.NightVision;
 import net.peacefulcraft.rtp.commands.RTP;
 import net.peacefulcraft.rtp.commands.Reload;
+import net.peacefulcraft.rtp.commands.ToggleDrops;
 import net.peacefulcraft.rtp.configuration.Configuration;
+import net.peacefulcraft.rtp.listeners.BlockBreakListener;
 public class PCNEssentials extends JavaPlugin{
 
 	public static final String release = "0.0.2";
@@ -24,6 +26,10 @@ public class PCNEssentials extends JavaPlugin{
 
 	public static final String messagePrefix = ChatColor.BLUE + "[" + ChatColor.GREEN  + "PCN" + ChatColor.BLUE + "] " + ChatColor.RESET;
 
+	public static boolean randomDropsEnabled;
+		public static boolean isRandomDropsEnabled() { return randomDropsEnabled; }
+		public static void setRandomDrops(boolean b) { randomDropsEnabled = b; }
+
 	public PCNEssentials(){
 		p = this;
 	}
@@ -33,17 +39,25 @@ public class PCNEssentials extends JavaPlugin{
 
 		c = new Configuration(this.getConfig());
 
+		//Hard coded on enable.
+		randomDropsEnabled = false;
+
 		this.getCommand("rtp").setExecutor(new RTP(this.getConfig()));
 		if(Configuration.getRtpEnabled()) { logNotice("RTP: Enabled"); }
 		
 		this.getCommand("nv").setExecutor(new NightVision());
 		if(this.getConfig().getBoolean("nv.enabled")) { logNotice("NV: Enabled"); }
 
+		this.getCommand("randomDrops").setExecutor(new ToggleDrops());
+
 		this.getCommand("pcn-reload").setExecutor(new Reload());
 		this.getCommand("medals").setExecutor(new Medals());
 		//this.getCommand("pickaxe").setExecutor(new Pickaxe());
 		this.getCommand("pickaxe").setExecutor(new Boots());
 		this.getCommand("crusade").setExecutor(new Crusade());
+
+		//Registering listeners
+		getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);
 
 		UpdateCheck updateCheck = new UpdateCheck();
 		// On a healthy server, this checks every hour
