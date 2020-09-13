@@ -25,6 +25,9 @@ commands:
     crusade:
       description: Bombards the foe with a powerful crusade.
       usage: /<command> [player]
+    pcnscore:
+      description: Toggle scoreboard display for challenge
+      usage: /<command> [on | off]
     randomDrops:
       description: Toggle random drops
       usage: /command [enable | disable]

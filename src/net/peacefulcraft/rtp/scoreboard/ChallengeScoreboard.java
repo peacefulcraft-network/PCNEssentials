@@ -1,0 +1,73 @@
+package net.peacefulcraft.rtp.scoreboard;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Set;
+
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Score;
+import org.bukkit.scoreboard.Scoreboard;
+
+import net.md_5.bungee.api.ChatColor;
+import net.peacefulcraft.rtp.PCNEssentials;
+
+public class ChallengeScoreboard {
+  private String challengeName;
+  private YamlConfiguration scores;
+  private Scoreboard scoreboard;
+    public Scoreboard getScoreboard() { return scoreboard; }
+  private Objective trackedObjective;
+
+  public ChallengeScoreboard(String challengeName) throws IOException, InvalidConfigurationException {
+    this.challengeName = challengeName;
+    this.scores = new YamlConfiguration();
+    this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+    this.trackedObjective = this.scoreboard.registerNewObjective(challengeName.toLowerCase().replaceAll(" ", ""), "foo", ChatColor.GREEN + challengeName);
+    this.trackedObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
+    this.loadData();
+  }
+
+  private void loadData() throws IOException, InvalidConfigurationException {
+    File dataFile = new File(PCNEssentials.getPluginInstance().getDataFolder().getPath() + "/challenges/" + challengeName.toLowerCase() + ".yml");
+    if (!dataFile.exists()) { return; }
+    
+    scores.load(dataFile);
+    Set<String> keySet = scores.getKeys(false);
+    keySet.forEach(key -> {
+      String username = scores.getString(key + ".name");
+      int score = scores.getInt((key + ".score"));
+      this.trackedObjective.getScore(username).setScore(score);
+    });
+  }
+
+  public void saveData() throws IOException {
+    this.scores.save(
+      new File(PCNEssentials.getPluginInstance().getDataFolder().getPath() + "/challenges/" + challengeName.toLowerCase() + ".yml")
+    );
+  }
+
+  public void incrimentScore(Player p) {
+    int score = 0;
+    String oldName = p.getName();
+    if (this.scores.contains(p.getUniqueId().toString())) {
+      score = this.scores.getInt(p.getUniqueId().toString() + ".score");
+      oldName = this.scores.getString(p.getUniqueId().toString() + ".name");
+    }
+
+    scores.set(p.getUniqueId().toString() + ".name", p.getName());
+    scores.set(p.getUniqueId().toString() + ".score", ++score);
+
+    Score scoreEntry = this.trackedObjective.getScore(p.getName());
+    scoreEntry.setScore(score);
+
+    // Check if the player's name changed. Remove old score entry if it did
+    if (!p.getName().equals(oldName)) {
+      this.trackedObjective.getScore(oldName).setScore(0);
+    }
+  }
+}

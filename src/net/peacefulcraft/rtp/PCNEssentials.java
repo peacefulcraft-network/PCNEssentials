@@ -1,7 +1,9 @@
 package net.peacefulcraft.rtp;
 
+import java.io.IOException;
 import java.util.logging.Level;
 
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.md_5.bungee.api.ChatColor;
@@ -11,9 +13,12 @@ import net.peacefulcraft.rtp.commands.Medals;
 import net.peacefulcraft.rtp.commands.NightVision;
 import net.peacefulcraft.rtp.commands.RTP;
 import net.peacefulcraft.rtp.commands.Reload;
+import net.peacefulcraft.rtp.commands.ShowChallengeScoreboard;
 import net.peacefulcraft.rtp.commands.ToggleDrops;
 import net.peacefulcraft.rtp.configuration.Configuration;
+import net.peacefulcraft.rtp.listeners.AndesiteMinedListener;
 import net.peacefulcraft.rtp.listeners.BlockBreakListener;
+import net.peacefulcraft.rtp.scoreboard.ChallengeScoreboard;
 public class PCNEssentials extends JavaPlugin{
 
 	public static final String release = "0.0.2";
@@ -30,6 +35,9 @@ public class PCNEssentials extends JavaPlugin{
 		public static boolean isRandomDropsEnabled() { return randomDropsEnabled; }
 		public static void setRandomDrops(boolean b) { randomDropsEnabled = b; }
 
+	public static ChallengeScoreboard challengeScoreboard;
+		public static ChallengeScoreboard getChallengeScoreboard() { return challengeScoreboard; }
+
 	public PCNEssentials(){
 		p = this;
 	}
@@ -41,6 +49,15 @@ public class PCNEssentials extends JavaPlugin{
 
 		//Hard coded on enable.
 		randomDropsEnabled = false;
+
+		try {
+			challengeScoreboard = new ChallengeScoreboard("Andesite Mined");
+			getServer().getPluginManager().registerEvents(new AndesiteMinedListener(), this);
+			this.getCommand("pcnscore").setExecutor(new ShowChallengeScoreboard());
+		} catch (IOException | InvalidConfigurationException e) {
+			e.printStackTrace();
+			logError("Unable to load challenge data file for Andesite Mined competition.");
+		}
 
 		this.getCommand("rtp").setExecutor(new RTP(this.getConfig()));
 		if(Configuration.getRtpEnabled()) { logNotice("RTP: Enabled"); }
@@ -65,9 +82,20 @@ public class PCNEssentials extends JavaPlugin{
 	}
 	
 	public void onDisable() {
+		try {
+			challengeScoreboard.saveData();
+		} catch (IOException e) {
+			e.printStackTrace();
+			logError("An error occured while attempting to save challenge data. Some data has been lost.");
+		}
+
 		this.getServer().getScheduler().cancelTasks(this);
 	}
 	
+	public void logError(String message) {
+		this.getLogger().log(Level.SEVERE, ChatColor.GREEN + "[" + ChatColor.BLUE + "PCN" + ChatColor.GREEN + "]" + ChatColor.RESET + message);
+	}
+
 	public void logNotice(String message) {
 		this.getLogger().log(Level.INFO, ChatColor.GREEN + "[" + ChatColor.BLUE + "PCN" + ChatColor.GREEN + "]" + ChatColor.RESET + message);
 	}
