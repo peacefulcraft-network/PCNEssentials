@@ -2,6 +2,7 @@ name: PCNEssentials
 main: net.peacefulcraft.rtp.PCNEssentials
 version: 0.0.1
 api-version: 1.15
+softdepend: [CoreProtect]
 
 commands:
     rtp:
