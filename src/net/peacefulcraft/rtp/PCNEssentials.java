@@ -3,6 +3,7 @@ package net.peacefulcraft.rtp;
 import java.io.IOException;
 import java.util.logging.Level;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -54,6 +55,17 @@ public class PCNEssentials extends JavaPlugin{
 			challengeScoreboard = new ChallengeScoreboard("Andesite Mined");
 			getServer().getPluginManager().registerEvents(new AndesiteMinedListener(), this);
 			this.getCommand("pcnscore").setExecutor(new ShowChallengeScoreboard());
+
+			// Save the stuff every 5 minutes
+			Bukkit.getScheduler().runTaskTimer(this, () -> {
+				try {
+					challengeScoreboard.saveData();
+				} catch (IOException e) {
+					e.printStackTrace();
+					logError("An error occured while attempting to save challenge data. Some data could be lost.");
+				}
+			}, 60000, 60000);
+
 		} catch (IOException | InvalidConfigurationException e) {
 			e.printStackTrace();
 			logError("Unable to load challenge data file for Andesite Mined competition.");
