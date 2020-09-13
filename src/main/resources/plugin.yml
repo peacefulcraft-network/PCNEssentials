@@ -25,3 +25,6 @@ commands:
     crusade:
       description: Bombards the foe with a powerful crusade.
       usage: /<command> [player]
+    randomDrops:
+      description: Toggle random drops
+      usage: /command [enable | disable]
