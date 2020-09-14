@@ -19,6 +19,7 @@ public class ShowChallengeScoreboard implements CommandExecutor {
 
     if (args.length < 1) {
       sender.sendMessage(PCNEssentials.messagePrefix + "/pcnscore on | /pcnscore off");
+      return true;
     }
 
     if (args[0].equalsIgnoreCase("on")) {
