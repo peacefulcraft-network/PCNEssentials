@@ -1,6 +1,9 @@
 nv:
   enabled: true
 
+competition:
+  enable: false
+
 rtp:
   enabled: true
   resistance_duration: 10 # seconds for resistence effect to last after teleport

@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import net.peacefulcraft.rtp.PCNEssentials;
+import net.peacefulcraft.rtp.configuration.Configuration;
 
 public class ShowChallengeScoreboard implements CommandExecutor {
 
@@ -16,6 +17,11 @@ public class ShowChallengeScoreboard implements CommandExecutor {
       sender.sendMessage(PCNEssentials.messagePrefix + "This command is intended for players only.");
       return true;
     } 
+
+    if (!Configuration.getCompetitionEnabled()) {
+      sender.sendMessage(PCNEssentials.messagePrefix + "Sorry, there are no active compeitions setup with scoreboard displays.");
+      return true;
+    }
 
     if (args.length < 1) {
       sender.sendMessage(PCNEssentials.messagePrefix + "/pcnscore on | /pcnscore off");

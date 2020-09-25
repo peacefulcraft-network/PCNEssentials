@@ -22,6 +22,8 @@ public class Configuration {
   public static int getRtpResistanceDuration() { return c.getInt("rtp.resistance_duration"); }
   public static void setRtpResistanceDuration(int duration) { c.set("rtp.resistance_duration", duration); }
 
+  public static boolean getCompetitionEnabled() { return c.getBoolean("competition.enabled"); }
+
   public Configuration(FileConfiguration c) {
     Configuration.c = c;
 

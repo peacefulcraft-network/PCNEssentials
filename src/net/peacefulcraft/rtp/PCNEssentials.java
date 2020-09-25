@@ -51,25 +51,27 @@ public class PCNEssentials extends JavaPlugin{
 		//Hard coded on enable.
 		randomDropsEnabled = false;
 
-		try {
-			challengeScoreboard = new ChallengeScoreboard("Andesite Mined");
-			getServer().getPluginManager().registerEvents(new AndesiteMinedListener(), this);
-			this.getCommand("pcnscore").setExecutor(new ShowChallengeScoreboard());
+		if (c.getCompetitionEnabled()) {
+			try {
+				challengeScoreboard = new ChallengeScoreboard("Andesite Mined");
+				getServer().getPluginManager().registerEvents(new AndesiteMinedListener(), this);
 
-			// Save the stuff every 5 minutes
-			Bukkit.getScheduler().runTaskTimer(this, () -> {
-				try {
-					challengeScoreboard.saveData();
-				} catch (IOException e) {
-					e.printStackTrace();
-					logError("An error occured while attempting to save challenge data. Some data could be lost.");
-				}
-			}, 60000, 60000);
+				// Save the stuff every 5 minutes
+				Bukkit.getScheduler().runTaskTimer(this, () -> {
+					try {
+						challengeScoreboard.saveData();
+					} catch (IOException e) {
+						e.printStackTrace();
+						logError("An error occured while attempting to save challenge data. Some data could be lost.");
+					}
+				}, 60000, 60000);
 
-		} catch (IOException | InvalidConfigurationException e) {
-			e.printStackTrace();
-			logError("Unable to load challenge data file for Andesite Mined competition.");
+			} catch (IOException | InvalidConfigurationException e) {
+				e.printStackTrace();
+				logError("Unable to load challenge data file for Andesite Mined competition.");
+			}
 		}
+		this.getCommand("pcnscore").setExecutor(new ShowChallengeScoreboard());
 
 		this.getCommand("rtp").setExecutor(new RTP(this.getConfig()));
 		if(Configuration.getRtpEnabled()) { logNotice("RTP: Enabled"); }
