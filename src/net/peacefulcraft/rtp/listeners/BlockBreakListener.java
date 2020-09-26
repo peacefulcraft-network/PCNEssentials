@@ -35,7 +35,29 @@ public class BlockBreakListener implements Listener {
         
         //Getting block in event and clearing
         Block block = e.getBlock();
-        block.getDrops().clear();
+        if(block.getType().equals(Material.CHEST)) {
+            for(ItemStack item : block.getDrops()) {
+                if(item.getType().equals(Material.CHEST)) {
+                    if(item.getAmount() == 0) { 
+                        block.getDrops().remove(item); 
+                    } else {
+                        item.setAmount(item.getAmount() - 1);
+                    }
+                }
+            } 
+        } else if(block.getType().equals(Material.TRAPPED_CHEST)) {
+            for(ItemStack item : block.getDrops()) {
+                if(item.getType().equals(Material.TRAPPED_CHEST)) {
+                    if(item.getAmount() == 0) { 
+                        block.getDrops().remove(item); 
+                    } else {
+                        item.setAmount(item.getAmount() - 1);
+                    }
+                }
+            }   
+        } else {
+            block.getDrops().clear();
+        }
 
         ItemStack item = new ItemStack(MATERIALS.get(RANDOM.nextInt(SIZE)), 1);
 
