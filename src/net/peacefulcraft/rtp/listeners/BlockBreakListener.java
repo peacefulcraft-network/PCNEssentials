@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -46,15 +47,15 @@ public class BlockBreakListener implements Listener {
         //If random drops aren't enabled we quit
         if(!PCNEssentials.isRandomDropsEnabled()) { return; }
         
-        //Getting block in event and clearing
-        Block block = e.getBlock();
-        block.getDrops().clear();
+        //Set cancel dropping items
+        e.setDropItems(false);
 
-        //1/5 chance to get complete random drop
+        Block block = e.getBlock();
+
+        ItemStack item = null;
         if(RANDOM.nextInt(4) == 0) {
-            block.getDrops().add(new ItemStack(MATERIALS.get(RANDOM.nextInt(SIZE)), 1));
+            item = new ItemStack(MATERIALS.get(RANDOM.nextInt(SIZE)), 1);
         } else {
-            ItemStack item = null;
             if(EARTH_LIST.contains(block.getType())) {
                 item = new ItemStack(EARTH_LIST.get(RANDOM.nextInt(EARTH_LIST.size())), 1);
             } else if(NETHER_END_LIST.contains(block.getType())) {
@@ -64,9 +65,11 @@ public class BlockBreakListener implements Listener {
             } else {
                 item = new ItemStack(MATERIALS.get(RANDOM.nextInt(SIZE)), 1);
             }
-    
-            block.getDrops().add(item);
         }
+
+        //Dropping new item naturally at location
+        World world = e.getBlock().getWorld();
+        world.dropItemNaturally(block.getLocation(), item);
     }
 
     // Adding all the items to their respective lists
