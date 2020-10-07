@@ -52,18 +52,21 @@ public class BlockBreakListener implements Listener {
 
         Block block = e.getBlock();
 
-        ItemStack item = null;
-        if(RANDOM.nextInt(4) == 0) {
-            item = new ItemStack(MATERIALS.get(RANDOM.nextInt(SIZE)), 1);
-        } else {
-            if(EARTH_LIST.contains(block.getType())) {
-                item = new ItemStack(EARTH_LIST.get(RANDOM.nextInt(EARTH_LIST.size())), 1);
-            } else if(NETHER_END_LIST.contains(block.getType())) {
-                item = new ItemStack(NETHER_END_LIST.get(RANDOM.nextInt(NETHER_END_LIST.size())), 1);
-            } else if(WOOD_LIST.contains(block.getType())) {
-                item = new ItemStack(WOOD_LIST.get(RANDOM.nextInt(WOOD_LIST.size())), 1);
-            } else {
+        ItemStack item = new ItemStack(Material.AIR, 1);
+        while(item.getType() == Material.AIR)
+        {
+            if(RANDOM.nextInt(4) == 0) {
                 item = new ItemStack(MATERIALS.get(RANDOM.nextInt(SIZE)), 1);
+            } else {
+                if(EARTH_LIST.contains(block.getType())) {
+                    item = new ItemStack(EARTH_LIST.get(RANDOM.nextInt(EARTH_LIST.size())), 1);
+                } else if(NETHER_END_LIST.contains(block.getType())) {
+                    item = new ItemStack(NETHER_END_LIST.get(RANDOM.nextInt(NETHER_END_LIST.size())), 1);
+                } else if(WOOD_LIST.contains(block.getType())) {
+                    item = new ItemStack(WOOD_LIST.get(RANDOM.nextInt(WOOD_LIST.size())), 1);
+                } else {
+                    item = new ItemStack(MATERIALS.get(RANDOM.nextInt(SIZE)), 1);
+                }
             }
         }
 
