@@ -49,6 +49,8 @@ public class BlockBreakListener implements Listener {
         if(!PCNEssentials.isRandomDropsEnabled()) { return; }
 
         if(!e.getPlayer().getGameMode().equals(GameMode.SURVIVAL)) { return; }
+
+        if(e.getBlock().getDrops().size() == 0) { return; }
         
         //Set cancel dropping items
         e.setDropItems(false);
