@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -46,6 +47,8 @@ public class BlockBreakListener implements Listener {
     public void onBlockBreak(BlockBreakEvent e) {
         //If random drops aren't enabled we quit
         if(!PCNEssentials.isRandomDropsEnabled()) { return; }
+
+        if(!e.getPlayer().getGameMode().equals(GameMode.SURVIVAL)) { return; }
         
         //Set cancel dropping items
         e.setDropItems(false);
