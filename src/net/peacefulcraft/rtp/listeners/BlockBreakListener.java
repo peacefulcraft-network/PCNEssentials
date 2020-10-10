@@ -11,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
@@ -45,7 +46,7 @@ public class BlockBreakListener implements Listener {
     //Size of material list
     private static final int SIZE = MATERIALS.size();
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent e) {
         //If random drops aren't enabled we quit
         if(!PCNEssentials.isRandomDropsEnabled()) { return; }
