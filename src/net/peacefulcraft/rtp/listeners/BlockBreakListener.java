@@ -40,6 +40,8 @@ public class BlockBreakListener implements Listener {
     /**List of all nether and end items */
     private static List<Material> NETHER_END_LIST = new ArrayList<Material>();
 
+    private static List<Material> BLACKLIST = new ArrayList<Material>();
+
     //Size of material list
     private static final int SIZE = MATERIALS.size();
 
@@ -57,9 +59,8 @@ public class BlockBreakListener implements Listener {
 
         Block block = e.getBlock();
 
-        ItemStack item = new ItemStack(Material.AIR, 1);
-        while(item.getType() == Material.AIR)
-        {
+        ItemStack item;
+        do {
             if(RANDOM.nextInt(4) == 0) {
                 item = new ItemStack(MATERIALS.get(RANDOM.nextInt(SIZE)), 1);
             } else {
@@ -73,15 +74,38 @@ public class BlockBreakListener implements Listener {
                     item = new ItemStack(MATERIALS.get(RANDOM.nextInt(SIZE)), 1);
                 }
             }
-        }
+        } while (BLACKLIST.contains(item.getType()));
 
         //Dropping new item naturally at location
+        PCNEssentials.getPluginInstance().logNotice(item.getType().toString());
         World world = e.getBlock().getWorld();
         world.dropItemNaturally(block.getLocation(), item);
     }
 
     // Adding all the items to their respective lists
     static {
+        BLACKLIST.add(Material.AIR);
+        BLACKLIST.add(Material.CAVE_AIR);
+        BLACKLIST.add(Material.LEGACY_AIR);
+        BLACKLIST.add(Material.VOID_AIR);
+        BLACKLIST.add(Material.BARRIER);
+        BLACKLIST.add(Material.LEGACY_BARRIER);
+        BLACKLIST.add(Material.BEDROCK);
+        BLACKLIST.add(Material.LEGACY_BEDROCK);
+        BLACKLIST.add(Material.COMMAND_BLOCK);
+        BLACKLIST.add(Material.COMMAND_BLOCK_MINECART);
+        BLACKLIST.add(Material.LEGACY_COMMAND);
+        BLACKLIST.add(Material.LEGACY_COMMAND_MINECART);
+        BLACKLIST.add(Material.LEGACY_COMMAND_CHAIN);
+        BLACKLIST.add(Material.LEGACY_COMMAND_REPEATING);
+        BLACKLIST.add(Material.END_CRYSTAL);
+        BLACKLIST.add(Material.END_PORTAL);
+        BLACKLIST.add(Material.END_GATEWAY);
+        BLACKLIST.add(Material.LEGACY_END_CRYSTAL);
+        BLACKLIST.add(Material.LEGACY_ENDER_PORTAL);
+        BLACKLIST.add(Material.LEGACY_END_GATEWAY);
+        BLACKLIST.add(Material.NETHER_PORTAL);
+
         /**
          * WOOD LIST
          */
