@@ -10,10 +10,12 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.inventory.ItemStack;
 
 import net.peacefulcraft.rtp.PCNEssentials;
@@ -60,6 +62,49 @@ public class BlockBreakListener implements Listener {
 
         Block block = e.getBlock();
 
+
+        List<ItemStack> items = new ArrayList<>();
+        int fortuneLevel = e.getPlayer().getInventory().getItemInMainHand().getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS);
+        int silkLevel = e.getPlayer().getInventory().getItemInMainHand().getEnchantmentLevel(Enchantment.SILK_TOUCH);
+        
+        /**
+         * Different logic for fortune, silk touch, neither
+         * All have 4/5 chance to do as intended and 1/5 chance to be random
+         */
+        if(fortuneLevel != 0) {
+            if(RANDOM.nextInt(4) == 0) {
+                for(int i = 1; i <= fortuneLevel; i++) {
+                    items.add(getItemStack(block));
+                }
+            } else {
+                ItemStack temp = getItemStack(block);
+                temp.setAmount(fortuneLevel);
+                items.add(temp);
+            }
+        } else if(silkLevel != 0) {
+            if(RANDOM.nextInt(4) == 0) {
+                items.add(getItemStack(block));
+            } else {
+                items.add(new ItemStack(block.getType(), 1));
+            }
+        } else {
+            items.add(getItemStack(block));
+        }
+
+        //Dropping new item naturally at location
+        for(ItemStack item : items) {
+            PCNEssentials.getPluginInstance().logNotice(item.getType().toString());
+            World world = e.getBlock().getWorld();
+            world.dropItemNaturally(block.getLocation(), item);
+        }
+    }
+
+    /**
+     * Helper method to fetch random item drop
+     * @param block Block that was hit during event
+     * @return ItemStack of random item
+     */
+    private ItemStack getItemStack(Block block) {
         ItemStack item;
         do {
             if(RANDOM.nextInt(4) == 0) {
@@ -77,10 +122,7 @@ public class BlockBreakListener implements Listener {
             }
         } while (BLACKLIST.contains(item.getType()));
 
-        //Dropping new item naturally at location
-        PCNEssentials.getPluginInstance().logNotice(item.getType().toString());
-        World world = e.getBlock().getWorld();
-        world.dropItemNaturally(block.getLocation(), item);
+        return item;
     }
 
     // Adding all the items to their respective lists
