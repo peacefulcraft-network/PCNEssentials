@@ -16,6 +16,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.inventory.ItemStack;
 
 import net.peacefulcraft.rtp.PCNEssentials;
@@ -95,6 +96,19 @@ public class BlockBreakListener implements Listener {
         for(ItemStack item : items) {
             PCNEssentials.getPluginInstance().logNotice(item.getType().toString());
             World world = e.getBlock().getWorld();
+            world.dropItemNaturally(block.getLocation(), item);
+        }
+    }
+
+    /**
+     * Intercepting explosion block damage
+     */
+    public void explosionEvent(EntityExplodeEvent e) {
+        for(Block block : e.blockList()) {
+            ItemStack item = getItemStack(block);
+
+            PCNEssentials.getPluginInstance().logNotice(item.getType().toString());
+            World world = block.getWorld();
             world.dropItemNaturally(block.getLocation(), item);
         }
     }
