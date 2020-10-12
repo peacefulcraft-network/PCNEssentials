@@ -105,7 +105,7 @@ public class BlockBreakListener implements Listener {
     /**
      * Intercepting explosion block damage
      */
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    /*@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void explosionEvent(EntityExplodeEvent e) {
         for(Block block : e.blockList()) {
             ItemStack item = getItemStack(block);
@@ -118,7 +118,7 @@ public class BlockBreakListener implements Listener {
                 BLACKLIST.add(item.getType());
             }
         }
-    }
+    }*/
 
     /**
      * Helper method to fetch random item drop
