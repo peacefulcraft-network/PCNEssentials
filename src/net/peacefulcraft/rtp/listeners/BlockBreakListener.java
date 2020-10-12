@@ -94,22 +94,36 @@ public class BlockBreakListener implements Listener {
 
         //Dropping new item naturally at location
         for(ItemStack item : items) {
-            PCNEssentials.getPluginInstance().logNotice(item.getType().toString());
-            World world = e.getBlock().getWorld();
-            world.dropItemNaturally(block.getLocation(), item);
+            try {
+                World world = e.getBlock().getWorld();
+                world.dropItemNaturally(block.getLocation(), item);
+            } catch (IllegalArgumentException ex) {
+                PCNEssentials.getPluginInstance().logNotice(item.getType().toString() + " is not droppable.");
+                /**
+                 * Not re-rolling here on failure because that would re-roll the entire item list leading to duplication.
+                 */
+            }
         }
     }
 
     /**
      * Intercepting explosion block damage
      */
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void explosionEvent(EntityExplodeEvent e) {
         for(Block block : e.blockList()) {
             ItemStack item = getItemStack(block);
 
-            PCNEssentials.getPluginInstance().logNotice(item.getType().toString());
-            World world = block.getWorld();
-            world.dropItemNaturally(block.getLocation(), item);
+            try {
+                World world = block.getWorld();
+                world.dropItemNaturally(block.getLocation(), item);
+            } catch (IllegalArgumentException ex) {
+                PCNEssentials.getPluginInstance().logError(item.getType().toString() + " is not dropablle.");
+                /**
+                 * Not re-rolling here on failure because that would re-roll the entire item list leading to duplication.
+                 * Explosions don't drop all blocks so if we roll a bad block, just catch the expcetion and eat the block.
+                 */
+            }
         }
     }
 
@@ -155,12 +169,12 @@ public class BlockBreakListener implements Listener {
         BLACKLIST.add(Material.LEGACY_COMMAND_MINECART);
         BLACKLIST.add(Material.LEGACY_COMMAND_CHAIN);
         BLACKLIST.add(Material.LEGACY_COMMAND_REPEATING);
-        BLACKLIST.add(Material.END_CRYSTAL);
         BLACKLIST.add(Material.END_PORTAL);
         BLACKLIST.add(Material.END_GATEWAY);
         BLACKLIST.add(Material.LEGACY_END_CRYSTAL);
         BLACKLIST.add(Material.LEGACY_ENDER_PORTAL);
         BLACKLIST.add(Material.LEGACY_END_GATEWAY);
+        BLACKLIST.add(Material.FIRE);
         BLACKLIST.add(Material.NETHER_PORTAL);
 
         /**
