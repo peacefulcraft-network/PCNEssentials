@@ -54,8 +54,6 @@ public class BlockBreakListener implements Listener {
         //If random drops aren't enabled we quit
         if(!PCNEssentials.isRandomDropsEnabled()) { return; }
 
-        if(!e.getPlayer().getGameMode().equals(GameMode.SURVIVAL)) { return; }
-
         if(e.getBlock().getDrops().size() == 0) { return; }
         
         //Set cancel dropping items
@@ -99,9 +97,7 @@ public class BlockBreakListener implements Listener {
                 world.dropItemNaturally(block.getLocation(), item);
             } catch (IllegalArgumentException ex) {
                 PCNEssentials.getPluginInstance().logNotice(item.getType().toString() + " is not droppable.");
-                /**
-                 * Not re-rolling here on failure because that would re-roll the entire item list leading to duplication.
-                 */
+                BLACKLIST.add(item.getType());
             }
         }
     }
@@ -119,10 +115,7 @@ public class BlockBreakListener implements Listener {
                 world.dropItemNaturally(block.getLocation(), item);
             } catch (IllegalArgumentException ex) {
                 PCNEssentials.getPluginInstance().logError(item.getType().toString() + " is not dropablle.");
-                /**
-                 * Not re-rolling here on failure because that would re-roll the entire item list leading to duplication.
-                 * Explosions don't drop all blocks so if we roll a bad block, just catch the expcetion and eat the block.
-                 */
+                BLACKLIST.add(item.getType());
             }
         }
     }
