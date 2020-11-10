@@ -14,6 +14,7 @@ import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
 import net.coreprotect.CoreProtectAPI.ParseResult;
 import net.peacefulcraft.rtp.PCNEssentials;
+import net.peacefulcraft.rtp.configuration.Configuration;
 
 public class AndesiteMinedListener implements Listener {
   
@@ -39,6 +40,8 @@ public class AndesiteMinedListener implements Listener {
 
   @EventHandler
   public void onBreakBlock(BlockBreakEvent ev) {
+    if(!Configuration.getCompetitionEnabled()) { return; }
+
     if (trackedBlocks.contains(ev.getBlock().getType())) {
       if (coAPI == null) {
         PCNEssentials.getChallengeScoreboard().incrimentScore(ev.getPlayer());

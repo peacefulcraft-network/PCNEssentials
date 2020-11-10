@@ -11,3 +11,9 @@ rtp:
     default:
       min: 0
       max: 10000
+
+random:
+  enabled: true
+
+crusade:
+  enabled: true

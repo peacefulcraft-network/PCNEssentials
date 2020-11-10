@@ -24,6 +24,9 @@ public class Configuration {
 
   public static boolean getCompetitionEnabled() { return c.getBoolean("competition.enabled"); }
 
+  public static boolean getRandomEnabled() { return c.getBoolean("random.enabled"); }
+
+  public static boolean getCrusadeEnabled() { return c.getBoolean("crusade.enabled"); }
   public Configuration(FileConfiguration c) {
     Configuration.c = c;
 

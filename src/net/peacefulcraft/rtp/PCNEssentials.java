@@ -48,8 +48,7 @@ public class PCNEssentials extends JavaPlugin{
 
 		c = new Configuration(this.getConfig());
 
-		//Hard coded on enable.
-		randomDropsEnabled = true;
+		randomDropsEnabled = Configuration.getRandomEnabled();
 
 		if (c.getCompetitionEnabled()) {
 			try {
