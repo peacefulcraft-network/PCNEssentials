@@ -19,6 +19,7 @@ import net.peacefulcraft.rtp.commands.ToggleDrops;
 import net.peacefulcraft.rtp.configuration.Configuration;
 import net.peacefulcraft.rtp.listeners.AndesiteMinedListener;
 import net.peacefulcraft.rtp.listeners.BlockBreakListener;
+import net.peacefulcraft.rtp.listeners.TurkeyListener;
 import net.peacefulcraft.rtp.scoreboard.ChallengeScoreboard;
 public class PCNEssentials extends JavaPlugin{
 
@@ -49,25 +50,32 @@ public class PCNEssentials extends JavaPlugin{
 		c = new Configuration(this.getConfig());
 
 		randomDropsEnabled = Configuration.getRandomEnabled();
+		if (randomDropsEnabled) { logNotice("RandomDrops: Enabled"); }
+		if (!randomDropsEnabled) { logNotice("RandomDrops: Disabled"); }
 
-		if (c.getCompetitionEnabled()) {
-			try {
-				challengeScoreboard = new ChallengeScoreboard("Andesite Mined");
-				getServer().getPluginManager().registerEvents(new AndesiteMinedListener(), this);
-
-				// Save the stuff every 5 minutes
-				Bukkit.getScheduler().runTaskTimer(this, () -> {
-					try {
-						challengeScoreboard.saveData();
-					} catch (IOException e) {
-						e.printStackTrace();
-						logError("An error occured while attempting to save challenge data. Some data could be lost.");
-					}
-				}, 60000, 60000);
-
-			} catch (IOException | InvalidConfigurationException e) {
-				e.printStackTrace();
-				logError("Unable to load challenge data file for Andesite Mined competition.");
+		if (Configuration.getCompetitionEnabled()) {
+			String competitionName = Configuration.getCompetitionName();
+			if (competitionName.isEmpty()) {
+				logNotice("Empty competition name loaded from config. Competition loading cancelled");
+			} else {
+				try {
+					challengeScoreboard = new ChallengeScoreboard(competitionName);
+					registerCompetitionListener(competitionName);
+	
+					// Save the stuff every 5 minutes
+					Bukkit.getScheduler().runTaskTimer(this, () -> {
+						try {
+							challengeScoreboard.saveData();
+						} catch (IOException e) {
+							e.printStackTrace();
+							logError("An error occured while attempting to save challenge data. Some data could be lost.");
+						}
+					}, 60000, 60000);
+	
+				} catch (IOException | InvalidConfigurationException e) {
+					e.printStackTrace();
+					logError("Unable to load challenge data file for Andesite Mined competition.");
+				}
 			}
 		}
 		this.getCommand("pcnscore").setExecutor(new ShowChallengeScoreboard());
@@ -103,6 +111,16 @@ public class PCNEssentials extends JavaPlugin{
 		}
 
 		this.getServer().getScheduler().cancelTasks(this);
+	}
+
+	private void registerCompetitionListener(String boardName) {
+		if(boardName.equalsIgnoreCase("Andesite Mined")) {
+			getServer().getPluginManager().registerEvents(new AndesiteMinedListener(), this);
+			logNotice("Competition: Registered Andesite Mined listener.");
+		} else if(boardName.equalsIgnoreCase("Turkeys Killed")) {
+			getServer().getPluginManager().registerEvents(new TurkeyListener(), this);
+			logNotice("Competition: Registered Turkeys Killed listener.");
+		}
 	}
 	
 	public void logError(String message) {

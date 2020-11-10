@@ -41,6 +41,7 @@ public class AndesiteMinedListener implements Listener {
   @EventHandler
   public void onBreakBlock(BlockBreakEvent ev) {
     if(!Configuration.getCompetitionEnabled()) { return; }
+    if(!Configuration.getCompetitionName().equalsIgnoreCase("Andesite Mined")) { return; }
 
     if (trackedBlocks.contains(ev.getBlock().getType())) {
       if (coAPI == null) {

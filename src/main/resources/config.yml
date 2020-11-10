@@ -3,6 +3,7 @@ nv:
 
 competition:
   enable: false
+  name: "Turkeys Killed"
 
 rtp:
   enabled: true
