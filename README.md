@@ -22,6 +22,18 @@ rtp:
     large:
       min: 20000
       max: 30000
+
+random:
+  enabled: true
+
+# Enables / Disables the /crusade <player> command: Bombards the foe with a powerful crusade.
+crusade:
+  enabled: true
+
+# Don't worry about this one
+competition:
+  enable: false
+  name: "Turkeys Killed"
 ```
 
 ### Permission Nodes
