@@ -93,6 +93,10 @@ public class RTP implements CommandExecutor{
 			PCNEssentials.getPluginInstance().logNotice(p.getName() + " Teleported to " + x + ", " + y + ", " + z);
 			
 			int resistanceDurationTicks = Configuration.getRtpResistanceDuration() * 20;
+			if (Configuration.getRtpResistanceDuration() == 0) {
+				PCNEssentials.getPluginInstance().logNotice("No rtp.resistance_duration value was found in the config. Defaulting to 10 seconds.");
+				resistanceDurationTicks = 200;
+			}
 			p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, resistanceDurationTicks, 255));
 			p.teleport(new Location(p.getWorld(), x, y, z));
 			//PaperLib.teleportAsync(p, new Location(p.getWorld(), x, y, z));
