@@ -106,7 +106,9 @@ public class PCNEssentials extends JavaPlugin{
 	
 	public void onDisable() {
 		try {
-			challengeScoreboard.saveData();
+			if (challengeScoreboard != null) {
+				challengeScoreboard.saveData();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 			logError("An error occured while attempting to save challenge data. Some data has been lost.");
