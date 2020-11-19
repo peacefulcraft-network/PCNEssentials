@@ -49,7 +49,11 @@ public class TurkeyListener implements Listener {
         if(!(damaged instanceof Chicken)) { return; }
         Chicken chick = (Chicken) damaged;
 
+        // Only increment if chicken died
+        if(!(chick.getHealth() <= e.getFinalDamage())) { return; }
+
         // Checking name and meta data
+        if(chick.getCustomName() == null || chick.getCustomName().isEmpty()) { return; }
         if(!chick.getCustomName().equalsIgnoreCase("Thanksgiving Turkey")) { return; }
         if(!chick.hasMetadata("Event")) { return; }
 

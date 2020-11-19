@@ -10,6 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import net.md_5.bungee.api.ChatColor;
 import net.peacefulcraft.rtp.commands.Boots;
 import net.peacefulcraft.rtp.commands.Crusade;
+import net.peacefulcraft.rtp.commands.MakeTurkey;
 import net.peacefulcraft.rtp.commands.Medals;
 import net.peacefulcraft.rtp.commands.NightVision;
 import net.peacefulcraft.rtp.commands.RTP;
@@ -93,6 +94,7 @@ public class PCNEssentials extends JavaPlugin{
 		//this.getCommand("pickaxe").setExecutor(new Pickaxe());
 		this.getCommand("pickaxe").setExecutor(new Boots());
 		this.getCommand("crusade").setExecutor(new Crusade());
+		this.getCommand("maketurkey").setExecutor(new MakeTurkey());
 
 		//Registering listeners
 		getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);

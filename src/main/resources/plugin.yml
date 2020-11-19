@@ -32,3 +32,6 @@ commands:
     randomDrops:
       description: Toggle random drops
       usage: /command [enable | disable]
+    maketurkey:
+      description: Sets all chickens to turkey event turkeys.
+      usage: /<command>
