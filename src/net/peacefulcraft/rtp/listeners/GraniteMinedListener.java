@@ -16,12 +16,12 @@ import net.coreprotect.CoreProtectAPI.ParseResult;
 import net.peacefulcraft.rtp.PCNEssentials;
 import net.peacefulcraft.rtp.configuration.Configuration;
 
-public class AndesiteMinedListener implements Listener {
+public class GraniteMinedListener implements Listener {
   
   private CoreProtectAPI coAPI;
   private List<Object> trackedBlocks;
 
-  public AndesiteMinedListener() {
+  public GraniteMinedListener() {
     Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CoreProtect");
     if (plugin == null || !(plugin instanceof CoreProtect)) {
       PCNEssentials.getPluginInstance().logNotice("CoreProtect not found. Block break exploit mitigations are not enabled.");
@@ -35,13 +35,13 @@ public class AndesiteMinedListener implements Listener {
     }
 
     trackedBlocks = new ArrayList<Object>();
-    trackedBlocks.add(Material.ANDESITE);
+    trackedBlocks.add(Material.GRANITE);
   }
 
   @EventHandler
   public void onBreakBlock(BlockBreakEvent ev) {
     if(!Configuration.getCompetitionEnabled()) { return; }
-    if(!Configuration.getCompetitionName().equalsIgnoreCase("Andesite Mined")) { return; }
+    if(!Configuration.getCompetitionName().equalsIgnoreCase("Granite Mined")) { return; }
 
     if (trackedBlocks.contains(ev.getBlock().getType())) {
       if (coAPI == null) {

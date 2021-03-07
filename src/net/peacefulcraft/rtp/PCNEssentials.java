@@ -18,7 +18,7 @@ import net.peacefulcraft.rtp.commands.Reload;
 import net.peacefulcraft.rtp.commands.ShowChallengeScoreboard;
 import net.peacefulcraft.rtp.commands.ToggleDrops;
 import net.peacefulcraft.rtp.configuration.Configuration;
-import net.peacefulcraft.rtp.listeners.AndesiteMinedListener;
+import net.peacefulcraft.rtp.listeners.GraniteMinedListener;
 import net.peacefulcraft.rtp.listeners.BlockBreakListener;
 import net.peacefulcraft.rtp.listeners.TurkeyListener;
 import net.peacefulcraft.rtp.scoreboard.ChallengeScoreboard;
@@ -118,9 +118,9 @@ public class PCNEssentials extends JavaPlugin{
 	}
 
 	private void registerCompetitionListener(String boardName) {
-		if(boardName.equalsIgnoreCase("Andesite Mined")) {
-			getServer().getPluginManager().registerEvents(new AndesiteMinedListener(), this);
-			logNotice("Competition: Registered Andesite Mined listener.");
+		if(boardName.equalsIgnoreCase("Granite Mined")) {
+			getServer().getPluginManager().registerEvents(new GraniteMinedListener(), this);
+			logNotice("Competition: Registered Granite Mined listener.");
 		} else if(boardName.equalsIgnoreCase("Turkeys Killed")) {
 			getServer().getPluginManager().registerEvents(new TurkeyListener(), this);
 			logNotice("Competition: Registered Turkeys Killed listener.");
