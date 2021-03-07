@@ -54,7 +54,7 @@ public class GraniteMinedListener implements Listener {
           for (String[] result : lookupResults) {
             ParseResult parsedResult = coAPI.parseResult(result);
             if (trackedBlocks.contains(parsedResult.getType())) {
-              ev.getPlayer().sendMessage("Omitted");
+              // ev.getPlayer().sendMessage("Omitted");
               return;
             }
           }
