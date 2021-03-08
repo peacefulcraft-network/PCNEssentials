@@ -47,20 +47,24 @@ public class GraniteMinedListener implements Listener {
       if (coAPI == null) {
         PCNEssentials.getChallengeScoreboard().incrimentScore(ev.getPlayer());
       } else {
-        List<String[]> lookupResults = coAPI.blockLookup(ev.getBlock(), Integer.MAX_VALUE);
-        if (lookupResults == null || lookupResults.size() == 0) {
-          PCNEssentials.getChallengeScoreboard().incrimentScore(ev.getPlayer());
-        } else {
-          for (String[] result : lookupResults) {
-            ParseResult parsedResult = coAPI.parseResult(result);
-            if (trackedBlocks.contains(parsedResult.getType())) {
-              // ev.getPlayer().sendMessage("Omitted");
-              return;
+        Bukkit.getScheduler().runTaskLater(PCNEssentials.getPluginInstance(), () -> {
+          List<String[]> lookupResults = coAPI.blockLookup(ev.getBlock(), Integer.MAX_VALUE);
+          if (lookupResults == null || lookupResults.size() == 0) {
+            PCNEssentials.getPluginInstance().logNotice("Detected challenge block break from natural generation.");
+            PCNEssentials.getChallengeScoreboard().incrimentScore(ev.getPlayer());
+          } else {
+            for (String[] result : lookupResults) {
+              ParseResult parsedResult = coAPI.parseResult(result);
+              if (trackedBlocks.contains(parsedResult.getType())) {
+                PCNEssentials.getPluginInstance().logNotice("Detected challenge block break from unatural generation - omitting");
+                return;
+              }
             }
-          }
 
-          PCNEssentials.getChallengeScoreboard().incrimentScore(ev.getPlayer());
-        }
+            PCNEssentials.getPluginInstance().logNotice("Detected challenge block break from natural generation, but with unrelated modifications.");
+            PCNEssentials.getChallengeScoreboard().incrimentScore(ev.getPlayer());
+          }
+        }, 100L);
       }
     }
   }
