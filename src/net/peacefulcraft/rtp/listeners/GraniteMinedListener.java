@@ -55,7 +55,7 @@ public class GraniteMinedListener implements Listener {
           } else {
             for (String[] result : lookupResults) {
               ParseResult parsedResult = coAPI.parseResult(result);
-              if (trackedBlocks.contains(parsedResult.getType())) {
+              if (trackedBlocks.contains(parsedResult.getType()) && parsedResult.getActionId() == 1) {
                 PCNEssentials.getPluginInstance().logNotice("Detected challenge block break from unatural generation - omitting");
                 return;
               }
