@@ -14,7 +14,7 @@ rtp:
       max: 10000
 
 random:
-  enabled: true
+  enabled: false
 
 crusade:
   enabled: true
