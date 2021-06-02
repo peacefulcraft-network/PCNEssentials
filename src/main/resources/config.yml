@@ -18,3 +18,8 @@ random:
 
 crusade:
   enabled: true
+
+hug:
+  enabled: true
+  heart_count: 15
+  cooldown: 15

@@ -29,6 +29,10 @@ public class Configuration {
 
   public static boolean getCrusadeEnabled() { return c.getBoolean("crusade.enabled"); }
 
+  public static boolean IsHugEnabled() { return c.getBoolean("hug.enabled"); }
+  public static int getHugHeartEffectCount() { return c.getInt("hug.heart_count"); }
+  public static int getHugCooldown() { return c.getInt("hug.cooldown"); }
+
   public Configuration(FileConfiguration c) {
     Configuration.c = c;
 
@@ -38,6 +42,7 @@ public class Configuration {
     c.setDefaults(defaultConfiguration);
 
     loadComplexValues();
+    ensureIntegrity();
   }
 
   private static void loadComplexValues() {
@@ -66,5 +71,22 @@ public class Configuration {
     rtpRanges.put(key, range);
     c.set("rtp.ranges." + key + ".min", range.getMinRadius());
     c.set("rtp.ranges." + key + ".max", range.getMaxRadius());
+  }
+
+  /**
+   * Set configuration values to their defaults if they do not exist in the file already
+   */
+  private static void ensureIntegrity() {
+    if (!c.contains("hug.enabled")) {
+      c.set("hug.enabled", true);
+    }
+
+    if (!c.contains("hug.heart_count")) {
+      c.set("hug.heart_count", 15);
+    }
+
+    if (!c.contains("hug.cooldown")) {
+      c.set("hug.cooldown", 15);
+    }
   }
 }

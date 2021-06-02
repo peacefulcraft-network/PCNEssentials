@@ -10,6 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import net.md_5.bungee.api.ChatColor;
 import net.peacefulcraft.rtp.commands.Boots;
 import net.peacefulcraft.rtp.commands.Crusade;
+import net.peacefulcraft.rtp.commands.Hug;
 import net.peacefulcraft.rtp.commands.MakeTurkey;
 import net.peacefulcraft.rtp.commands.Medals;
 import net.peacefulcraft.rtp.commands.NightVision;
@@ -32,7 +33,7 @@ public class PCNEssentials extends JavaPlugin{
 	private static Configuration c;
 		public static Configuration getPluginConfig() { return c; }
 
-	public static final String messagePrefix = ChatColor.BLUE + "[" + ChatColor.GREEN  + "PCN" + ChatColor.BLUE + "] " + ChatColor.RESET;
+	public static final String messagePrefix = ChatColor.BLUE + "[" + ChatColor.GREEN  + "PCN" + ChatColor.BLUE + "] " + ChatColor.RESET + ChatColor.GRAY;
 
 	public static boolean randomDropsEnabled;
 		public static boolean isRandomDropsEnabled() { return randomDropsEnabled; }
@@ -40,12 +41,9 @@ public class PCNEssentials extends JavaPlugin{
 
 	public static ChallengeScoreboard challengeScoreboard;
 		public static ChallengeScoreboard getChallengeScoreboard() { return challengeScoreboard; }
-
-	public PCNEssentials(){
-		p = this;
-	}
 		
 	public void onEnable() {
+		p = this;
 		this.saveDefaultConfig();
 
 		c = new Configuration(this.getConfig());
@@ -95,6 +93,7 @@ public class PCNEssentials extends JavaPlugin{
 		this.getCommand("pickaxe").setExecutor(new Boots());
 		this.getCommand("crusade").setExecutor(new Crusade());
 		this.getCommand("maketurkey").setExecutor(new MakeTurkey());
+		this.getCommand("hug").setExecutor(new Hug());
 
 		//Registering listeners
 		getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);

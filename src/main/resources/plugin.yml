@@ -35,3 +35,6 @@ commands:
     maketurkey:
       description: Sets all chickens to turkey event turkeys.
       usage: /<command>
+    hug:
+      description: Send a player your affections, within reason.
+      usage: /<command> <username>
