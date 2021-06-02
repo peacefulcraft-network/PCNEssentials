@@ -24,7 +24,7 @@ rtp:
       max: 30000
 
 random:
-  enabled: true
+  enabled: false
 
 # Enables / Disables the /crusade <player> command: Bombards the foe with a powerful crusade.
 crusade:
@@ -34,6 +34,12 @@ crusade:
 competition:
   enable: false
   name: "Turkeys Killed"
+
+# /hug command
+hug:
+  enabled: true
+  heart_count: 15
+  cooldown: 15 # seconds
 ```
 
 ### Permission Nodes
