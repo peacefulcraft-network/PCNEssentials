@@ -73,18 +73,49 @@ public class SeaPickleBreakListener implements Listener {
               PCNEssentials.getChallengeScoreboard().incrimentScoreBy(ev.getPlayer(), item.getAmount());
             });
           } else {
+            /**
+             * Only check if the most recent action was related to the challenge.
+             * Since this challenge could involve farming, we must account for placements
+             * from a while ago that are no longer relavent.
+             */
+            boolean secondMostRecent = false;
             for (String[] result : lookupResults) {
               ParseResult parsedResult = coAPI.parseResult(result);
-              if (trackedBlocks.contains(parsedResult.getType()) && parsedResult.getActionId() == 1) {
-                PCNEssentials.getPluginInstance().logNotice("Detected challenge block break from unatural generation - omitting");
-                return;
+              System.out.println(parsedResult.getTime() + " - " + parsedResult.getActionString() + " - " + parsedResult.getType());
+
+               /**
+               * Look for the second recent block mod at this location which involved THE (singular) challenge block.
+               * If it was a placement, then we ignore. If it was a removal than we're good. The most recent interaction
+               * will be the break that we're trying to count so we need to ignore it. The second most recent should either be
+               * a place if this is an attempted cheat, or a removal from previous farm cycles.
+               * 
+               * CO results come with most recent to oldest. First action involving challenge block is what we want.
+               * (0=removed, 1=placed, 2=interaction)
+               */
+              if (trackedBlocks.contains(parsedResult.getType())) {
+
+                // Skip the place or break in the result set
+                if (parsedResult.getActionId() == 1 || parsedResult.getActionId() == 0) {
+                  if (!secondMostRecent) {
+                    System.out.println("Found first related entry. Skipping");
+                    secondMostRecent = true;
+                    continue;
+                  }
+                }
+
+                if (parsedResult.getActionId() == 1) {
+                  PCNEssentials.getPluginInstance().logNotice("Detected challenge block break from unatural generation - omitting");
+                  return;
+
+                } else if (parsedResult.getActionId() == 0) {
+                  PCNEssentials.getPluginInstance().logNotice("Detected challenge block break from natural generation, but with unrelated modifications.");
+                  drops.forEach((item) -> {
+                    PCNEssentials.getChallengeScoreboard().incrimentScoreBy(ev.getPlayer(), item.getAmount());
+                  });
+                  return;
+                }
               }
             }
-
-            PCNEssentials.getPluginInstance().logNotice("Detected challenge block break from natural generation, but with unrelated modifications.");
-            drops.forEach((item) -> {
-              PCNEssentials.getChallengeScoreboard().incrimentScoreBy(ev.getPlayer(), item.getAmount());
-            });
           }
         }, 100L);
       }
