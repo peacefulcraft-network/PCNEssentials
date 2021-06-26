@@ -30,7 +30,16 @@ public class ShowChallengeScoreboard implements CommandExecutor {
 
     if (args[0].equalsIgnoreCase("on")) {
       ((Player) sender).setScoreboard(PCNEssentials.getChallengeScoreboard().getScoreboard());
-      sender.sendMessage(PCNEssentials.messagePrefix + "Scoreboard display enabled.");
+
+      Long curTime = System.currentTimeMillis();
+      if (curTime < Configuration.getCompetitionStartMS()) {
+        // +1 is to avoid saying '0 hours'
+        sender.sendMessage(PCNEssentials.messagePrefix + "The " + Configuration.getCompetitionName() + " cometition doesn't start for " + (1+((Configuration.getCompetitionStartMS() - curTime) / 3600000) + " hours."));
+      } else if (curTime > Configuration.getCompetitionEndMS()) {
+        sender.sendMessage(PCNEssentials.messagePrefix + "The " + Configuration.getCompetitionName() + " cometition ended " + ((curTime - Configuration.getCompetitionEndMS()) / 3600000) + " hours ago. The final scores were...");
+      } else {
+        sender.sendMessage(PCNEssentials.messagePrefix + "Scoreboard display enabled. Competition started " + ((curTime - Configuration.getCompetitionStartMS()) / 3600000) + " hours ago and ends in " + ((Configuration.getCompetitionEndMS() - curTime) / 1000) + " hours.");
+      }
     } else {
       ((Player) sender).setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
       sender.sendMessage(PCNEssentials.messagePrefix + "Scoreboard display disabled.");

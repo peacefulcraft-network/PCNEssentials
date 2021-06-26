@@ -20,6 +20,8 @@ import net.peacefulcraft.rtp.commands.ShowChallengeScoreboard;
 import net.peacefulcraft.rtp.commands.ToggleDrops;
 import net.peacefulcraft.rtp.configuration.Configuration;
 import net.peacefulcraft.rtp.listeners.GraniteMinedListener;
+import net.peacefulcraft.rtp.listeners.PhantomsKilledListener;
+import net.peacefulcraft.rtp.listeners.SeaPickleBreakListener;
 import net.peacefulcraft.rtp.listeners.BlockBreakListener;
 import net.peacefulcraft.rtp.listeners.TurkeyListener;
 import net.peacefulcraft.rtp.scoreboard.ChallengeScoreboard;
@@ -123,6 +125,12 @@ public class PCNEssentials extends JavaPlugin{
 		} else if(boardName.equalsIgnoreCase("Turkeys Killed")) {
 			getServer().getPluginManager().registerEvents(new TurkeyListener(), this);
 			logNotice("Competition: Registered Turkeys Killed listener.");
+		} else if(boardName.equalsIgnoreCase("Phantoms Killed")) {
+			getServer().getPluginManager().registerEvents(new PhantomsKilledListener(), this);
+			logNotice("Competition: Registered Phantoms Killed listener.");
+		} else if(boardName.equalsIgnoreCase("Sea Pickles")) {
+			getServer().getPluginManager().registerEvents(new SeaPickleBreakListener(), this);
+			logNotice("Competition: Registered Sea Pickles Collected listener.");		
 		}
 	}
 	

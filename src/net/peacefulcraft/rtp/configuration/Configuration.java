@@ -24,6 +24,8 @@ public class Configuration {
 
   public static boolean getCompetitionEnabled() { return c.getBoolean("competition.enabled"); }
   public static String getCompetitionName() { return c.getString("competition.name"); }
+  public static Long getCompetitionStartMS() { return c.getLong("competition.start_ms"); }
+  public static Long getCompetitionEndMS() { return c.getLong("competition.end_ms"); }
 
   public static boolean getRandomEnabled() { return c.getBoolean("random.enabled"); }
 
