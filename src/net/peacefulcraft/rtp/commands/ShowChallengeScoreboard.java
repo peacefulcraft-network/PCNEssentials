@@ -38,7 +38,7 @@ public class ShowChallengeScoreboard implements CommandExecutor {
       } else if (curTime > Configuration.getCompetitionEndMS()) {
         sender.sendMessage(PCNEssentials.messagePrefix + "The " + Configuration.getCompetitionName() + " cometition ended " + ((curTime - Configuration.getCompetitionEndMS()) / 3600000) + " hours ago. The final scores were...");
       } else {
-        sender.sendMessage(PCNEssentials.messagePrefix + "Scoreboard display enabled. Competition started " + ((curTime - Configuration.getCompetitionStartMS()) / 3600000) + " hours ago and ends in " + ((Configuration.getCompetitionEndMS() - curTime) / 1000) + " hours.");
+        sender.sendMessage(PCNEssentials.messagePrefix + "Scoreboard display enabled. Competition started " + ((curTime - Configuration.getCompetitionStartMS()) / 3600000) + " hours ago and ends in " + ((Configuration.getCompetitionEndMS() - curTime) / 3600000) + " hours.");
       }
     } else {
       ((Player) sender).setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
