@@ -1,6 +1,7 @@
 package net.peacefulcraft.rtp.listeners;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -9,6 +10,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.Plugin;
 
 import net.coreprotect.CoreProtect;
@@ -47,6 +50,17 @@ public class SeaPickleBreakListener implements Listener {
 		Long curTime = System.currentTimeMillis();
 		if (curTime < Configuration.getCompetitionStartMS() || curTime > Configuration.getCompetitionEndMS()) { return; }
 
+    /**
+     * There is not a way to see what items are dropped on a break so we have to re-roll the break,
+     * get a list of items to drop, drop them, and then use the list.size() as the score should the
+     * break pass the CO checks.
+     */
+    Collection<ItemStack> drops = ev.getBlock().getDrops(ev.getPlayer().getInventory().getItemInMainHand(), ev.getPlayer());
+    ev.setDropItems(false);
+    drops.forEach((item) -> {
+      ev.getBlock().getLocation().getWorld().dropItemNaturally(ev.getBlock().getLocation(), item);
+    });
+
     if (trackedBlocks.contains(ev.getBlock().getType())) {
       if (coAPI == null) {
         PCNEssentials.getChallengeScoreboard().incrimentScore(ev.getPlayer());
@@ -55,7 +69,9 @@ public class SeaPickleBreakListener implements Listener {
           List<String[]> lookupResults = coAPI.blockLookup(ev.getBlock(), Integer.MAX_VALUE);
           if (lookupResults == null || lookupResults.size() == 0) {
             PCNEssentials.getPluginInstance().logNotice("Detected challenge block break from natural generation.");
-            PCNEssentials.getChallengeScoreboard().incrimentScore(ev.getPlayer());
+            drops.forEach((item) -> {
+              PCNEssentials.getChallengeScoreboard().incrimentScoreBy(ev.getPlayer(), item.getAmount());
+            });
           } else {
             for (String[] result : lookupResults) {
               ParseResult parsedResult = coAPI.parseResult(result);
@@ -66,7 +82,9 @@ public class SeaPickleBreakListener implements Listener {
             }
 
             PCNEssentials.getPluginInstance().logNotice("Detected challenge block break from natural generation, but with unrelated modifications.");
-            PCNEssentials.getChallengeScoreboard().incrimentScore(ev.getPlayer());
+            drops.forEach((item) -> {
+              PCNEssentials.getChallengeScoreboard().incrimentScoreBy(ev.getPlayer(), item.getAmount());
+            });
           }
         }, 100L);
       }

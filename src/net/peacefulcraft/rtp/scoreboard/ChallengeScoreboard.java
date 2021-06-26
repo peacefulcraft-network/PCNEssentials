@@ -70,4 +70,24 @@ public class ChallengeScoreboard {
       this.trackedObjective.getScore(oldName).setScore(0);
     }
   }
+
+  public void incrimentScoreBy(Player p, Integer v) {
+    int score = 0;
+    String oldName = p.getName();
+    if (this.scores.contains(p.getUniqueId().toString())) {
+      score = this.scores.getInt(p.getUniqueId().toString() + ".score");
+      oldName = this.scores.getString(p.getUniqueId().toString() + ".name");
+    }
+
+    scores.set(p.getUniqueId().toString() + ".name", p.getName());
+    scores.set(p.getUniqueId().toString() + ".score", score + v);
+
+    Score scoreEntry = this.trackedObjective.getScore(p.getName());
+    scoreEntry.setScore(score + v);
+
+    // Check if the player's name changed. Remove old score entry if it did
+    if (!p.getName().equals(oldName)) {
+      this.trackedObjective.getScore(oldName).setScore(0);
+    }
+  }
 }
