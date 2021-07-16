@@ -23,6 +23,7 @@ import net.peacefulcraft.rtp.listeners.GraniteMinedListener;
 import net.peacefulcraft.rtp.listeners.PhantomsKilledListener;
 import net.peacefulcraft.rtp.listeners.SeaPickleBreakListener;
 import net.peacefulcraft.rtp.listeners.BlockBreakListener;
+import net.peacefulcraft.rtp.listeners.CowsBredAndKilledListener;
 import net.peacefulcraft.rtp.listeners.TurkeyListener;
 import net.peacefulcraft.rtp.scoreboard.ChallengeScoreboard;
 public class PCNEssentials extends JavaPlugin{
@@ -131,6 +132,9 @@ public class PCNEssentials extends JavaPlugin{
 		} else if(boardName.equalsIgnoreCase("Sea Pickles")) {
 			getServer().getPluginManager().registerEvents(new SeaPickleBreakListener(), this);
 			logNotice("Competition: Registered Sea Pickles Collected listener.");		
+		} else if (boardName.equalsIgnoreCase("Cows Bred")) {
+			getServer().getPluginManager().registerEvents(new CowsBredAndKilledListener(), this);
+			logNotice("Competition: Registered cow breeding and killing listeners.");		
 		}
 	}
 	

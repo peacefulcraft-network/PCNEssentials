@@ -90,4 +90,33 @@ public class ChallengeScoreboard {
       this.trackedObjective.getScore(oldName).setScore(0);
     }
   }
+
+  /**
+   * Decriment score. If score < floor, score = floor.
+   * @param p
+   * @param floor
+   */
+  public void decrimentScore(Player p, Integer floor) {
+    int score = 0;
+    String oldName = p.getName();
+    if (this.scores.contains(p.getUniqueId().toString())) {
+      score = this.scores.getInt(p.getUniqueId().toString() + ".score");
+      oldName = this.scores.getString(p.getUniqueId().toString() + ".name");
+    }
+
+    if (--score < floor) {
+      score = floor;
+    }
+
+    scores.set(p.getUniqueId().toString() + ".name", p.getName());
+    scores.set(p.getUniqueId().toString() + ".score", score);
+
+    Score scoreEntry = this.trackedObjective.getScore(p.getName());
+    scoreEntry.setScore(score);
+
+    // Check if the player's name changed. Remove old score entry if it did
+    if (!p.getName().equals(oldName)) {
+      this.trackedObjective.getScore(oldName).setScore(0);
+    }
+  }
 }
