@@ -51,10 +51,6 @@ public class RTP implements CommandExecutor{
 		}
 
 		String range = "";
-		for(String name : ranges.keySet()) {
-			range = name;
-			break;
-		}
 		if(arg3.length > 0) {
 			if(ranges.containsKey(arg3[0])) {
 				range = arg3[0];
