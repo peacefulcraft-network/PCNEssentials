@@ -69,11 +69,11 @@ public class RTP implements CommandExecutor{
 			RTPRadiusLimit limit = ranges.get(range);
 
 			if(Math.random() > 0.5) {
-				x = (int) Math.round(Math.random() * (limit.getMaxRadius() - limit.getMinRadius()));
+				x = (int) Math.round(Math.random() * limit.getMaxRadius());
 				z = (int) Math.round(limit.getMinRadius() + (Math.random() * (limit.getMaxRadius() - limit.getMinRadius())));
 			} else {
 				x = (int) Math.round(limit.getMinRadius() + (Math.random() * (limit.getMaxRadius() - limit.getMaxRadius())));
-				x = (int) Math.round(Math.random() * (limit.getMaxRadius() - limit.getMinRadius()));
+				z = (int) Math.round(Math.random() * limit.getMaxRadius());
 			}
 			
 			if(Math.random() > 0.5) {
