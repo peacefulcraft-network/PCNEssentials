@@ -29,6 +29,11 @@ public class RTP implements CommandExecutor{
 	public boolean onCommand(CommandSender arg0, Command arg1, String arg2, String[] arg3) {
 		HashMap<String, RTPRadiusLimit> ranges = Configuration.getRtpRanges();
 
+		if (!Configuration.getRtpEnabled()) {
+			arg0.sendMessage(PCNEssentials.messagePrefix + "RTP Command is disabled.");
+			return true;
+		}
+
 		if(ranges.size() < 1) {
 			arg0.sendMessage(ChatColor.BLUE + "[" + ChatColor.GREEN  + "PCN" + ChatColor.BLUE + "] " + ChatColor.RESET + "No RTP ranges configured.");
 			return true;
