@@ -8,6 +8,8 @@ competition:
 rtp:
   enabled: true
   resistance_duration: 10 # seconds for resistence effect to last after teleport
+  allowed_worlds:
+  - world
   ranges:
     default:
       min: 0

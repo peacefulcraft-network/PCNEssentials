@@ -15,6 +15,7 @@ import net.peacefulcraft.rtp.commands.MakeTurkey;
 import net.peacefulcraft.rtp.commands.Medals;
 import net.peacefulcraft.rtp.commands.NightVision;
 import net.peacefulcraft.rtp.commands.RTP;
+import net.peacefulcraft.rtp.commands.RTPTC;
 import net.peacefulcraft.rtp.commands.Reload;
 import net.peacefulcraft.rtp.commands.ShowChallengeScoreboard;
 import net.peacefulcraft.rtp.commands.ToggleDrops;
@@ -83,6 +84,7 @@ public class PCNEssentials extends JavaPlugin{
 		this.getCommand("pcnscore").setExecutor(new ShowChallengeScoreboard());
 
 		this.getCommand("rtp").setExecutor(new RTP(this.getConfig()));
+		this.getCommand("rtp").setTabCompleter(new RTPTC());
 		if(Configuration.getRtpEnabled()) { logNotice("RTP: Enabled"); }
 		
 		this.getCommand("nv").setExecutor(new NightVision());

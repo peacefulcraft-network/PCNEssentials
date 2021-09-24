@@ -2,7 +2,10 @@ package net.peacefulcraft.rtp.configuration;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -74,6 +77,18 @@ public class Configuration {
     c.set("rtp.ranges." + key + ".min", range.getMinRadius());
     c.set("rtp.ranges." + key + ".max", range.getMaxRadius());
   }
+  public static List<String> getAllowedRTPWorlds() {
+    // Return allowed world list, or default to all allowed if no list provided
+    if (c.contains("rtp.allowed_worlds")) {
+      return Collections.unmodifiableList((List<String>) c.getList("rtp.allowed_worlds"));
+    } else {
+      List<String> worldNames = new ArrayList<String>();
+      PCNEssentials.getPluginInstance().getServer().getWorlds().forEach((world) -> {
+        worldNames.add(world.getName());
+      });
+      return Collections.unmodifiableList(worldNames);
+    }
+  }
 
   /**
    * Set configuration values to their defaults if they do not exist in the file already
@@ -89,6 +104,10 @@ public class Configuration {
 
     if (!c.contains("hug.cooldown")) {
       c.set("hug.cooldown", 15);
+    }
+
+    if (!c.contains("rtp.allowed_worlds")) {
+      c.set("rtp.allowed_worlds", new ArrayList<String>());
     }
   }
 }

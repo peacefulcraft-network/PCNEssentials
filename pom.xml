@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>PCNEssentials</groupId>
   <artifactId>PCNEssentials</artifactId>
-  <version>0.0.4-SNAPSHOT</version>
+  <version>0.0.6-SNAPSHOT</version>
   <description>PCN Utility Commands</description>
   <properties>
     <maven.compiler.source>11</maven.compiler.source>
@@ -22,7 +22,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.16.5-R0.1-SNAPSHOT</version>
+            <version>1.17.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

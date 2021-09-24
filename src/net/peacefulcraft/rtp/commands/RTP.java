@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -55,6 +56,7 @@ public class RTP implements CommandExecutor{
 			return true;
 		}
 
+		// Get range if specified
 		String range = "";
 		if(arg3.length > 0) {
 			if(ranges.containsKey(arg3[0])) {
@@ -66,6 +68,28 @@ public class RTP implements CommandExecutor{
 				}
 				return true;
 			}
+		} else {
+			range = (String) ranges.keySet().toArray()[0];
+		}
+
+		// Get world if specified
+		World world = p.getLocation().getWorld();
+		if (arg3.length > 1) {
+			world = PCNEssentials.getPluginInstance().getServer().getWorld(arg3[1]);
+			if (world == null) {
+				world = p.getLocation().getWorld();
+			}
+		}
+
+		// Check that specified world is valid for RTP
+		if (!Configuration.getAllowedRTPWorlds().contains(world.getName())) {
+			arg0.sendMessage(PCNEssentials.messagePrefix + "Error: Unable to use RTP in world " + world.getName() + ". Select a valid world:");
+			System.out.println(Configuration.getAllowedRTPWorlds());
+			Configuration.getAllowedRTPWorlds().forEach((worldName) -> {
+				arg0.sendMessage(PCNEssentials.messagePrefix + "- " + worldName);
+			});
+			arg0.sendMessage(PCNEssentials.messagePrefix + "/rtp " + range + " [world]");
+			return true;
 		}
 		
 		if(usage.get(p.getUniqueId()) == null || (System.currentTimeMillis() - usage.get(p.getUniqueId())) > 60000) {
@@ -90,16 +114,15 @@ public class RTP implements CommandExecutor{
 				z *= -1;
 			}
 			
-			p.sendMessage(ChatColor.BLUE + "You've been teleported to (" + x + ", " + y + ", " + z + ")");
-			PCNEssentials.getPluginInstance().logNotice(p.getName() + " Teleported to " + x + ", " + y + ", " + z);
-			
 			int resistanceDurationTicks = Configuration.getRtpResistanceDuration() * 20;
 			if (Configuration.getRtpResistanceDuration() == 0) {
 				PCNEssentials.getPluginInstance().logNotice("No rtp.resistance_duration value was found in the config. Defaulting to 10 seconds.");
 				resistanceDurationTicks = 200;
 			}
 			p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, resistanceDurationTicks, 255));
-			p.teleport(new Location(p.getWorld(), x, y, z));
+			p.teleport(new Location(world, x, y, z));
+			p.sendMessage(ChatColor.BLUE + "You've been teleported to (" + x + ", " + y + ", " + z + ")");
+			PCNEssentials.getPluginInstance().logNotice(p.getName() + " Teleported to " + x + ", " + y + ", " + z);
 			//PaperLib.teleportAsync(p, new Location(p.getWorld(), x, y, z));
 			
 			usage.put(p.getUniqueId(), System.currentTimeMillis());

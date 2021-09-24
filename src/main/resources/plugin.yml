@@ -1,13 +1,13 @@
 name: PCNEssentials
 main: net.peacefulcraft.rtp.PCNEssentials
-version: 0.0.4
-api-version: 1.16
+version: 0.0.6
+api-version: 1.17
 softdepend: [CoreProtect]
 
 commands:
     rtp:
       description: Random teleport every 1 minute
-      usage: /<command> To TRTP
+      usage: /<command> [range] [world] To RTP
     nv:
       description: Night Vision
       usage: /<command> To toggle night vision
