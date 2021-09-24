@@ -12,6 +12,9 @@ nv:
 rtp:
   enabled: true     # Enable RTP Command
   resistance_duration: 10 # seconds for resistence effect to last after teleport
+  allowed_worlds:  # List of worlds users are allowed to /rtp to
+  - world
+  - peaceful
   ranges:
     small:          # Define RTP range called 'small'
       min: 1000     # Set the minimium teleport radius for this range
