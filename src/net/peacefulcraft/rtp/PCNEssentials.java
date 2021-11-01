@@ -14,6 +14,7 @@ import net.peacefulcraft.rtp.commands.Hug;
 import net.peacefulcraft.rtp.commands.MakeTurkey;
 import net.peacefulcraft.rtp.commands.Medals;
 import net.peacefulcraft.rtp.commands.NightVision;
+import net.peacefulcraft.rtp.commands.PumpkinMedal;
 import net.peacefulcraft.rtp.commands.RTP;
 import net.peacefulcraft.rtp.commands.RTPTC;
 import net.peacefulcraft.rtp.commands.Reload;
@@ -94,6 +95,7 @@ public class PCNEssentials extends JavaPlugin{
 
 		this.getCommand("pcn-reload").setExecutor(new Reload());
 		this.getCommand("medals").setExecutor(new Medals());
+		this.getCommand("pumpkinmedal").setExecutor(new PumpkinMedal());
 		//this.getCommand("pickaxe").setExecutor(new Pickaxe());
 		this.getCommand("pickaxe").setExecutor(new Boots());
 		this.getCommand("crusade").setExecutor(new Crusade());

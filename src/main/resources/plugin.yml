@@ -17,6 +17,10 @@ commands:
     medals:
       description: Medal command for PCN competitions.
       usage: /<command> [place][usage][date]
+    pumpkinmedal:
+      description: Make a pumpkin medal
+      usage: /<command> [title] [place] [description]
+      permission: pcn.staff
     pickaxe:
       description: Pickaxe command for PCN competitions.
       usage: /<command> [place]
