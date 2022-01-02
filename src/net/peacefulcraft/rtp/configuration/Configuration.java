@@ -38,6 +38,8 @@ public class Configuration {
   public static int getHugHeartEffectCount() { return c.getInt("hug.heart_count"); }
   public static int getHugCooldown() { return c.getInt("hug.cooldown"); }
 
+  public static boolean getShulkerDropsEnabled() { return c.getBoolean("shulker_drops.enabled"); }
+
   public Configuration(FileConfiguration c) {
     Configuration.c = c;
 

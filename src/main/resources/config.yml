@@ -25,3 +25,6 @@ hug:
   enabled: true
   heart_count: 15
   cooldown: 15
+
+shulker_drops:
+  enabled: true
