@@ -28,3 +28,6 @@ hug:
 
 shulker_drops:
   enabled: true
+
+ender_dragon_drops:
+  enabled: true
