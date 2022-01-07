@@ -40,6 +40,8 @@ public class Configuration {
 
   public static boolean getShulkerDropsEnabled() { return c.getBoolean("shulker_drops.enabled"); }
 
+  public static boolean getDragonDropsEnabled() { return c.getBoolean("ender_dragon_drops.enabled"); }
+
   public Configuration(FileConfiguration c) {
     Configuration.c = c;
 
