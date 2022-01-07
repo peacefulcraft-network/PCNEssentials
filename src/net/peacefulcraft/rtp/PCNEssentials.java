@@ -24,6 +24,7 @@ import net.peacefulcraft.rtp.configuration.Configuration;
 import net.peacefulcraft.rtp.listeners.GraniteMinedListener;
 import net.peacefulcraft.rtp.listeners.PhantomsKilledListener;
 import net.peacefulcraft.rtp.listeners.SeaPickleBreakListener;
+import net.peacefulcraft.rtp.listeners.ShulkerDropsListener;
 import net.peacefulcraft.rtp.listeners.BlockBreakListener;
 import net.peacefulcraft.rtp.listeners.CowsBredAndKilledListener;
 import net.peacefulcraft.rtp.listeners.TurkeyListener;
@@ -104,6 +105,7 @@ public class PCNEssentials extends JavaPlugin{
 
 		//Registering listeners
 		getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);
+		getServer().getPluginManager().registerEvents(new ShulkerDropsListener(), this);
 
 		UpdateCheck updateCheck = new UpdateCheck();
 		// On a healthy server, this checks every hour
