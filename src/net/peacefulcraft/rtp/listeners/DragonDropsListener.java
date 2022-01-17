@@ -23,6 +23,7 @@ public class DragonDropsListener implements Listener {
             Location loc = dragon.getLocation();
 
             loc.getWorld().dropItemNaturally(loc, new ItemStack(Material.ELYTRA, 1));
+            loc.getWorld().dropItemNaturally(loc, new ItemStack(Material.DRAGON_EGG, 1));
         }
     }
     
