@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -29,6 +31,16 @@ public class Configuration {
   public static String getCompetitionName() { return c.getString("competition.name"); }
   public static Long getCompetitionStartMS() { return c.getLong("competition.start_ms"); }
   public static Long getCompetitionEndMS() { return c.getLong("competition.end_ms"); }
+
+  public static String getCompetitionItem() { return c.getString("competition.item_name"); }
+  public static Location getCompetitionDepositLocation() {
+    int x = c.getInt("competition.deposit_location.x");
+    int y = c.getInt("competition.deposit_location.y");
+    int z = c.getInt("competition.deposit_location.z");
+    String world = c.getString("competition.deposit_location.world");
+
+    return new Location(Bukkit.getServer().getWorld(world), x, y, z);
+  }
 
   public static boolean getRandomEnabled() { return c.getBoolean("random.enabled"); }
 
