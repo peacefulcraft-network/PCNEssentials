@@ -9,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import net.md_5.bungee.api.ChatColor;
 import net.peacefulcraft.rtp.commands.Boots;
+import net.peacefulcraft.rtp.commands.CompetitionCommands;
 import net.peacefulcraft.rtp.commands.Crusade;
 import net.peacefulcraft.rtp.commands.Hug;
 import net.peacefulcraft.rtp.commands.MakeTurkey;
@@ -26,6 +27,7 @@ import net.peacefulcraft.rtp.listeners.PhantomsKilledListener;
 import net.peacefulcraft.rtp.listeners.SeaPickleBreakListener;
 import net.peacefulcraft.rtp.listeners.ShulkerDropsListener;
 import net.peacefulcraft.rtp.listeners.BlockBreakListener;
+import net.peacefulcraft.rtp.listeners.CompetitionPickupListener;
 import net.peacefulcraft.rtp.listeners.CowsBredAndKilledListener;
 import net.peacefulcraft.rtp.listeners.DragonDropsListener;
 import net.peacefulcraft.rtp.listeners.TurkeyListener;
@@ -60,29 +62,7 @@ public class PCNEssentials extends JavaPlugin{
 		if (!randomDropsEnabled) { logNotice("RandomDrops: Disabled"); }
 
 		if (Configuration.getCompetitionEnabled()) {
-			String competitionName = Configuration.getCompetitionName();
-			if (competitionName.isEmpty()) {
-				logNotice("Empty competition name loaded from config. Competition loading cancelled");
-			} else {
-				try {
-					challengeScoreboard = new ChallengeScoreboard(competitionName);
-					registerCompetitionListener(competitionName);
-	
-					// Save the stuff every 5 minutes
-					Bukkit.getScheduler().runTaskTimer(this, () -> {
-						try {
-							challengeScoreboard.saveData();
-						} catch (IOException e) {
-							e.printStackTrace();
-							logError("An error occured while attempting to save challenge data. Some data could be lost.");
-						}
-					}, 60000, 60000);
-	
-				} catch (IOException | InvalidConfigurationException e) {
-					e.printStackTrace();
-					logError("Unable to load challenge data file for Andesite Mined competition.");
-				}
-			}
+			enableCompetition();
 		}
 		this.getCommand("pcnscore").setExecutor(new ShowChallengeScoreboard());
 
@@ -103,6 +83,7 @@ public class PCNEssentials extends JavaPlugin{
 		this.getCommand("crusade").setExecutor(new Crusade());
 		this.getCommand("maketurkey").setExecutor(new MakeTurkey());
 		this.getCommand("hug").setExecutor(new Hug());
+		this.getCommand("pcncompetition").setExecutor(new CompetitionCommands());
 
 		//Registering listeners
 		getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);
@@ -115,16 +96,60 @@ public class PCNEssentials extends JavaPlugin{
 	}
 	
 	public void onDisable() {
-		try {
-			if (challengeScoreboard != null) {
-				challengeScoreboard.saveData();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-			logError("An error occured while attempting to save challenge data. Some data has been lost.");
-		}
+		disableCompetition();
 
 		this.getServer().getScheduler().cancelTasks(this);
+	}
+
+	/**
+	 * Configures and enables scoreboard.
+	 */
+	public boolean enableCompetition() {
+		Configuration.setCompetitionEnabled(true);
+
+		String competitionName = Configuration.getCompetitionName();
+		if (competitionName.isEmpty()) {
+			logNotice("Empty competition name loaded from config. Competition loading cancelled");
+			return false;
+		} else {
+			try {
+				challengeScoreboard = new ChallengeScoreboard(competitionName);
+				registerCompetitionListener(competitionName);
+
+				// Save the stuff every 5 minutes
+				Bukkit.getScheduler().runTaskTimer(this, () -> {
+					try {
+						challengeScoreboard.saveData();
+					} catch (IOException e) {
+						e.printStackTrace();
+						logError("An error occured while attempting to save challenge data. Some data could be lost.");
+					}
+				}, 60000, 60000);
+
+			} catch (IOException | InvalidConfigurationException e) {
+				e.printStackTrace();
+				logError("Unable to load challenge data file for Andesite Mined competition.");
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Saves and disabled competition and scoreboard
+	 */
+	public boolean disableCompetition() {
+		if (challengeScoreboard == null) { return true; }
+		try {
+			challengeScoreboard.saveData();
+			
+			Configuration.setCompetitionEnabled(false);
+			return true;
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			logError("Unable to load or save data file for competition");
+			return false;
+		}
 	}
 
 	private void registerCompetitionListener(String boardName) {
@@ -143,6 +168,9 @@ public class PCNEssentials extends JavaPlugin{
 		} else if (boardName.equalsIgnoreCase("Cows Bred")) {
 			getServer().getPluginManager().registerEvents(new CowsBredAndKilledListener(), this);
 			logNotice("Competition: Registered cow breeding and killing listeners.");		
+		} else if (boardName.contains("Collection Event")) {
+			getServer().getPluginManager().registerEvents(new CompetitionPickupListener(), this);
+			logNotice("Competition: Registered collection event listener");
 		}
 	}
 	

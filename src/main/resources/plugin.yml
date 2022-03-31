@@ -42,3 +42,6 @@ commands:
     hug:
       description: Send a player your affections, within reason.
       usage: /<command> <username>
+    pcncompetition:
+      description: Commands for pcn competitions.
+      usage: /<command>

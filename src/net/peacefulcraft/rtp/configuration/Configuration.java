@@ -1,6 +1,7 @@
 package net.peacefulcraft.rtp.configuration;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,11 +29,16 @@ public class Configuration {
   public static void setRtpResistanceDuration(int duration) { c.set("rtp.resistance_duration", duration); }
 
   public static boolean getCompetitionEnabled() { return c.getBoolean("competition.enabled"); }
+  public static void setCompetitionEnabled(boolean b) { c.set("competition.enabled", b); }
   public static String getCompetitionName() { return c.getString("competition.name"); }
+  public static void setCompetitionName(String name) { c.set("competition.name", name); }
   public static Long getCompetitionStartMS() { return c.getLong("competition.start_ms"); }
+  public static void setCompetitionStartMS(Long l) { c.set("competition.start_ms", l); }
   public static Long getCompetitionEndMS() { return c.getLong("competition.end_ms"); }
+  public static void setCompetitionEndMS(Long l) { c.set("competition.end_ms", l); }
 
   public static String getCompetitionItem() { return c.getString("competition.item_name"); }
+  public static void setCompetitionItem(String name) { c.set("competition.item_name", name); }
   public static Location getCompetitionDepositLocation() {
     int x = c.getInt("competition.deposit_location.x");
     int y = c.getInt("competition.deposit_location.y");
@@ -54,12 +60,15 @@ public class Configuration {
 
   public static boolean getDragonDropsEnabled() { return c.getBoolean("ender_dragon_drops.enabled"); }
 
+  private static File defaultConfigurationFile;
+  private static YamlConfiguration defaultConfiguration;
+
   public Configuration(FileConfiguration c) {
     Configuration.c = c;
 
     URL defaultConfigurationURI = getClass().getClassLoader().getResource("config.yml");
-    File defaultConfigurationFile = new File(defaultConfigurationURI.toString());
-    YamlConfiguration defaultConfiguration = YamlConfiguration.loadConfiguration(defaultConfigurationFile);
+    defaultConfigurationFile = new File(defaultConfigurationURI.toString());
+    defaultConfiguration = YamlConfiguration.loadConfiguration(defaultConfigurationFile);
     c.setDefaults(defaultConfiguration);
 
     loadComplexValues();
