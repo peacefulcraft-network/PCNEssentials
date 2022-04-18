@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -37,8 +38,9 @@ public class Configuration {
   public static Long getCompetitionEndMS() { return c.getLong("competition.end_ms"); }
   public static void setCompetitionEndMS(Long l) { c.set("competition.end_ms", l); }
 
-  public static String getCompetitionItem() { return c.getString("competition.item_name"); }
+  //public static String getCompetitionItem() { return c.getString("competition.item_name"); }
   public static void setCompetitionItem(String name) { c.set("competition.item_name", name); }
+  public static List<Map<?,?>> getCompetitionItemList() { return c.getMapList("competition.item_name"); }
   public static Location getCompetitionDepositLocation() {
     int x = c.getInt("competition.deposit_location.x");
     int y = c.getInt("competition.deposit_location.y");

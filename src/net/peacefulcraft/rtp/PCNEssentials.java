@@ -8,6 +8,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.md_5.bungee.api.ChatColor;
+import net.peacefulcraft.rtp.collectionevent.CollectionEvent;
 import net.peacefulcraft.rtp.commands.Boots;
 import net.peacefulcraft.rtp.commands.CompetitionCommands;
 import net.peacefulcraft.rtp.commands.Crusade;
@@ -22,14 +23,13 @@ import net.peacefulcraft.rtp.commands.Reload;
 import net.peacefulcraft.rtp.commands.ShowChallengeScoreboard;
 import net.peacefulcraft.rtp.commands.ToggleDrops;
 import net.peacefulcraft.rtp.configuration.Configuration;
+import net.peacefulcraft.rtp.listeners.BlockBreakListener;
+import net.peacefulcraft.rtp.listeners.CowsBredAndKilledListener;
+import net.peacefulcraft.rtp.listeners.DragonDropsListener;
 import net.peacefulcraft.rtp.listeners.GraniteMinedListener;
 import net.peacefulcraft.rtp.listeners.PhantomsKilledListener;
 import net.peacefulcraft.rtp.listeners.SeaPickleBreakListener;
 import net.peacefulcraft.rtp.listeners.ShulkerDropsListener;
-import net.peacefulcraft.rtp.listeners.BlockBreakListener;
-import net.peacefulcraft.rtp.listeners.CompetitionPickupListener;
-import net.peacefulcraft.rtp.listeners.CowsBredAndKilledListener;
-import net.peacefulcraft.rtp.listeners.DragonDropsListener;
 import net.peacefulcraft.rtp.listeners.TurkeyListener;
 import net.peacefulcraft.rtp.scoreboard.ChallengeScoreboard;
 public class PCNEssentials extends JavaPlugin{
@@ -51,6 +51,9 @@ public class PCNEssentials extends JavaPlugin{
 	public static ChallengeScoreboard challengeScoreboard;
 		public static ChallengeScoreboard getChallengeScoreboard() { return challengeScoreboard; }
 		
+	public static CollectionEvent collectionEvent;
+		public static CollectionEvent getCollectionEvent() { return collectionEvent; }
+
 	public void onEnable() {
 		p = this;
 		this.saveDefaultConfig();
@@ -169,7 +172,8 @@ public class PCNEssentials extends JavaPlugin{
 			getServer().getPluginManager().registerEvents(new CowsBredAndKilledListener(), this);
 			logNotice("Competition: Registered cow breeding and killing listeners.");		
 		} else if (boardName.contains("Collection Event")) {
-			getServer().getPluginManager().registerEvents(new CompetitionPickupListener(), this);
+			//getServer().getPluginManager().registerEvents(new CompetitionPickupListener(), this);
+			collectionEvent = new CollectionEvent();
 			logNotice("Competition: Registered collection event listener");
 		}
 	}

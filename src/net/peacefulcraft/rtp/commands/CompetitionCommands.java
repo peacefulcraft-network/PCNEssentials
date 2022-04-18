@@ -24,7 +24,7 @@ public class CompetitionCommands implements CommandExecutor {
             try {
                 Material mat = Material.valueOf(args[1]);
                 Configuration.setCompetitionItem(mat.name());
-                sender.sendMessage(PCNEssentials.messagePrefix + "Successfully set collection item to: " + Configuration.getCompetitionItem());
+                //sender.sendMessage(PCNEssentials.messagePrefix + "Successfully set collection item to: " + Configuration.getCompetitionItem());
                 return true;
             } catch (IllegalArgumentException ex) {
                 sender.sendMessage(PCNEssentials.messagePrefix + "/pcncompetition setitem [item name] given illegal item name");
@@ -86,6 +86,7 @@ public class CompetitionCommands implements CommandExecutor {
             }
         }
 
+        /*
         if (args[0].equalsIgnoreCase("setstarttime")) {
             if (args.length < 2) {
                 sender.sendMessage(
@@ -105,7 +106,7 @@ public class CompetitionCommands implements CommandExecutor {
                 sender.sendMessage(PCNEssentials.messagePrefix + "/pcncompetition setstarttime [days of comp]\n This command sets start time to NOW.");
                 return true;
             }
-        }
+        }*/
 
         return true;
     }

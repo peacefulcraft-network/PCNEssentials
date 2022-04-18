@@ -71,6 +71,19 @@ public class ChallengeScoreboard {
     }
   }
 
+  /**
+   * Method to be called to increment competition totals
+   * @param v value of increment
+   */
+  public void incrimentTotalBy(Integer v) {
+    int score = 0;
+    score = this.scores.getInt("Total.score");
+
+    scores.set("Total" + ".score", score + v);
+    Score scoreEntry = this.trackedObjective.getScore("Total");
+    scoreEntry.setScore(score + v);
+  }
+
   public void incrimentScoreBy(Player p, Integer v) {
     int score = 0;
     String oldName = p.getName();
