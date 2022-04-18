@@ -17,11 +17,11 @@ import net.md_5.bungee.api.ChatColor;
 import net.peacefulcraft.rtp.PCNEssentials;
 
 public class ChallengeScoreboard {
-  private String challengeName;
-  private YamlConfiguration scores;
-  private Scoreboard scoreboard;
+  protected String challengeName;
+  protected YamlConfiguration scores;
+  protected Scoreboard scoreboard;
     public Scoreboard getScoreboard() { return scoreboard; }
-  private Objective trackedObjective;
+  protected Objective trackedObjective;
 
   public ChallengeScoreboard(String challengeName) throws IOException, InvalidConfigurationException {
     this.challengeName = challengeName;
@@ -32,7 +32,7 @@ public class ChallengeScoreboard {
     this.loadData();
   }
 
-  private void loadData() throws IOException, InvalidConfigurationException {
+  protected void loadData() throws IOException, InvalidConfigurationException {
     File dataFile = new File(PCNEssentials.getPluginInstance().getDataFolder().getPath() + "/challenges/" + challengeName.toLowerCase() + ".yml");
     if (!dataFile.exists()) { return; }
     
@@ -69,6 +69,19 @@ public class ChallengeScoreboard {
     if (!p.getName().equals(oldName)) {
       this.trackedObjective.getScore(oldName).setScore(0);
     }
+  }
+
+  /**
+   * Method to be called to increment competition totals
+   * @param v value of increment
+   */
+  public void incrimentTotalBy(Integer v) {
+    int score = 0;
+    score = this.scores.getInt("Total.score");
+
+    scores.set("Total" + ".score", score + v);
+    Score scoreEntry = this.trackedObjective.getScore("Total");
+    scoreEntry.setScore(score + v);
   }
 
   public void incrimentScoreBy(Player p, Integer v) {
