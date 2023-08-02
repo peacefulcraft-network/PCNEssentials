@@ -9,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import net.md_5.bungee.api.ChatColor;
 import net.peacefulcraft.rtp.collectionevent.CollectionEvent;
+import net.peacefulcraft.rtp.commands.BarrierCommand;
 import net.peacefulcraft.rtp.commands.Boots;
 import net.peacefulcraft.rtp.commands.CompetitionCommands;
 import net.peacefulcraft.rtp.commands.Crusade;
@@ -87,6 +88,7 @@ public class PCNEssentials extends JavaPlugin{
 		this.getCommand("maketurkey").setExecutor(new MakeTurkey());
 		this.getCommand("hug").setExecutor(new Hug());
 		this.getCommand("pcncompetition").setExecutor(new CompetitionCommands());
+		this.getCommand("barrier").setExecutor(new BarrierCommand());
 
 		//Registering listeners
 		getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);

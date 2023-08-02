@@ -45,3 +45,7 @@ commands:
     pcncompetition:
       description: Commands for pcn competitions.
       usage: /<command>
+    barrier:
+      description: Creative give barrier
+      usage: /<command>
+      permission: pcn.barrier

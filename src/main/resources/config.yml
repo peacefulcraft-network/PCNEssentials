@@ -40,3 +40,6 @@ shulker_drops:
 
 ender_dragon_drops:
   enabled: true
+
+barrier:
+  enabled: true

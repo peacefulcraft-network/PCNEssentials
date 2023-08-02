@@ -1,7 +1,6 @@
 package net.peacefulcraft.rtp.configuration;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,6 +60,8 @@ public class Configuration {
   public static boolean getShulkerDropsEnabled() { return c.getBoolean("shulker_drops.enabled"); }
 
   public static boolean getDragonDropsEnabled() { return c.getBoolean("ender_dragon_drops.enabled"); }
+
+  public boolean getBarrierEnabled() { return c.getBoolean("barrier.enabled"); }
 
   private static File defaultConfigurationFile;
   private static YamlConfiguration defaultConfiguration;
@@ -135,6 +136,10 @@ public class Configuration {
 
     if (!c.contains("rtp.allowed_worlds")) {
       c.set("rtp.allowed_worlds", new ArrayList<String>());
+    }
+
+    if (!c.contains("barrier.enabled")) {
+      c.set("barrier.enabled", false);
     }
   }
 }
