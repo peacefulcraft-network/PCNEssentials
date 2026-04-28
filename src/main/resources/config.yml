@@ -43,3 +43,13 @@ ender_dragon_drops:
 
 barrier:
   enabled: true
+  
+
+plotBuildCompUpdates:
+  enabled: true  #whether to update Discord on submitted plots
+  frequency: 720  #update frequency
+  
+duelUpdates:
+  enabled: true
+  # The message format for Discord
+  message: "**%winner%** defeated **%loser%**! \n> **Winner:** %w_wins%W/%w_losses%L (Rating: %w_rating%)\n> **Loser:** %l_wins%W/%l_losses%L (Rating: %l_rating%)"

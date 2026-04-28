@@ -2,7 +2,8 @@ name: PCNEssentials
 main: net.peacefulcraft.rtp.PCNEssentials
 version: 0.0.7
 api-version: 1.17
-softdepend: [CoreProtect]
+depend: [LuckPerms,Essentials]
+softdepend: [CoreProtect,PlotSquared,Duels]
 
 commands:
     rtp:
