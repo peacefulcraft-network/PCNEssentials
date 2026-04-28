@@ -94,6 +94,33 @@ public class PCNEssentials extends JavaPlugin{
 		getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);
 		getServer().getPluginManager().registerEvents(new ShulkerDropsListener(), this);
 		getServer().getPluginManager().registerEvents(new DragonDropsListener(), this);
+		getServer().getPluginManager().registerEvents(new GlobalNick(), this);
+        
+        //let console know
+        getLogger().info("GlobalNickModule has been synchronized with LuckPerms!");
+		
+		
+		// Duels listener, only if duels installed
+		if (getServer().getPluginManager().isPluginEnabled("Duels")) {
+			getServer().getPluginManager().registerEvents(new DuelListener(this), this);
+		} else {
+			getLogger().warning("Duels not found! Duel notifications will not be sent.");
+		}
+
+		// 2. plot updates, only if that's installed
+		if (getServer().getPluginManager().isPluginEnabled("PlotSquared")) {
+			// Only run the plot timer if PlotSquared is actually on the server
+			if (this.getConfig().getBoolean("plotBuildCompUpdates.enabled", true)) {
+				int minutes = getConfig().getInt("plotBuildCompUpdates.frequency", 60);
+				long ticks = minutes * 1200L;
+				
+				new PlotUpdateTask(this).runTaskTimerAsynchronously(this, 20L, ticks);
+			}
+		} else {
+			getLogger().warning("PlotSquared not found! Plot updates will not be sent.");
+		}
+		
+		
 
 		UpdateCheck updateCheck = new UpdateCheck();
 		// On a healthy server, this checks every hour
@@ -156,6 +183,33 @@ public class PCNEssentials extends JavaPlugin{
 			return false;
 		}
 	}
+	
+	//discord webhook sender
+	public void sendToDiscord(String discordPost) {
+		final String webhookUrl = "https://discord.com/api/webhooks/1491655444186271836/p4clMobg7z7prvlSFiWAFasq2EWzNzRQdrYk8V4Kf-ac7pgL9CHYsPtqNPqQb3Rl_exd";
+        // Implement your existing webhook sending logic here
+        // Remember to use the color decimal: 5585548
+
+        try {
+            java.net.URL url = new java.net.URL(webhookUrl);
+            java.net.HttpURLConnection connection = (java.net.HttpURLConnection) url.openConnection();
+            connection.addRequestProperty("Content-Type", "application/json");
+            connection.addRequestProperty("User-Agent", "Java-Webhook");
+            connection.setDoOutput(true);
+            connection.setRequestMethod("POST");
+
+            try (java.io.OutputStream os = connection.getOutputStream()) {
+                os.write(discordPost.getBytes());
+                os.flush();
+            }
+
+            connection.getInputStream().close(); // Finalize the request
+            connection.disconnect();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 	private void registerCompetitionListener(String boardName) {
 		if(boardName.equalsIgnoreCase("Granite Mined")) {
