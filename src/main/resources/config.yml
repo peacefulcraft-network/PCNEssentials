@@ -45,6 +45,9 @@ barrier:
   enabled: true
   
 
+# Paste your live Discord webhook URL below. Keep this secret!
+discord-webhook-url: "YOUR_WEBHOOK_URL_HERE"
+
 plotBuildCompUpdates:
   enabled: true  #whether to update Discord on submitted plots
   frequency: 720  #update frequency

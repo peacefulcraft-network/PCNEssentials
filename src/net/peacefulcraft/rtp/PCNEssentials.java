@@ -35,7 +35,7 @@ import net.peacefulcraft.rtp.listeners.TurkeyListener;
 import net.peacefulcraft.rtp.scoreboard.ChallengeScoreboard;
 public class PCNEssentials extends JavaPlugin{
 
-	public static final String release = "0.0.6";
+	public static final String release = "0.0.9";
 
 	private static PCNEssentials p;
 		public static PCNEssentials getPluginInstance() { return p; }
@@ -186,7 +186,14 @@ public class PCNEssentials extends JavaPlugin{
 	
 	//discord webhook sender
 	public void sendToDiscord(String discordPost) {
-		final String webhookUrl = "https://discord.com/api/webhooks/1491655444186271836/p4clMobg7z7prvlSFiWAFasq2EWzNzRQdrYk8V4Kf-ac7pgL9CHYsPtqNPqQb3Rl_exd";
+		// Pull the string dynamically from the config.yml
+        // If the config option doesn't exist, it falls back to an empty string safely
+        final String webhookUrl = this.getConfig().getString("discord-webhook-url", ""); 
+
+        if (webhookUrl.isEmpty() || webhookUrl.equals("YOUR_WEBHOOK_URL_HERE")) {
+            this.getLogger().warning("Discord webhook URL is not configured in config.yml!");
+            return;
+        }
         // Implement your existing webhook sending logic here
         // Remember to use the color decimal: 5585548
 
