@@ -35,7 +35,7 @@ import net.peacefulcraft.rtp.listeners.TurkeyListener;
 import net.peacefulcraft.rtp.scoreboard.ChallengeScoreboard;
 public class PCNEssentials extends JavaPlugin{
 
-	public static final String release = "0.0.9";
+	public static final String release = "0.0.10";
 
 	private static PCNEssentials p;
 		public static PCNEssentials getPluginInstance() { return p; }
@@ -110,7 +110,7 @@ public class PCNEssentials extends JavaPlugin{
 		// 2. plot updates, only if that's installed
 		if (getServer().getPluginManager().isPluginEnabled("PlotSquared")) {
 			// Only run the plot timer if PlotSquared is actually on the server
-			if (this.getConfig().getBoolean("plotBuildCompUpdates.enabled", true)) {
+			if (this.getConfig().getBoolean("plotBuildCompUpdates.enabled", false)) {
 				int minutes = getConfig().getInt("plotBuildCompUpdates.frequency", 60);
 				long ticks = minutes * 1200L;
 				
@@ -118,6 +118,16 @@ public class PCNEssentials extends JavaPlugin{
 			}
 		} else {
 			getLogger().warning("PlotSquared not found! Plot updates will not be sent.");
+		}
+		
+		// 3. passing minecraft scoreboard standings to discord for events
+		if (this.getConfig().getBoolean("eventScoreboardUpdates.enabled", false)) {
+			String scoreboardObjectiveName=getConfig().getString("eventScoreboardUpdates.objectiveName", "scoreboard");
+			
+			int minutes2=getConfig().getInt("eventScoreboardUpdates.frequency", 30);
+			long ticks2=minutes2*1200L;
+			
+			new ScoreboardWebhookTask(this, scoreboardObjectiveName).runTaskTimer(this, 100L, ticks2);
 		}
 		
 		
