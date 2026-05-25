@@ -123,11 +123,12 @@ public class PCNEssentials extends JavaPlugin{
 		// 3. passing minecraft scoreboard standings to discord for events
 		if (this.getConfig().getBoolean("eventScoreboardUpdates.enabled", false)) {
 			String scoreboardObjectiveName=getConfig().getString("eventScoreboardUpdates.objectiveName", "scoreboard");
+			String scoreboardMessageTitle=getConfig().getString("eventScoreboardUpdates.messageTitle", "🏆 Event Scoreboard Standings");
 			
 			int minutes2=getConfig().getInt("eventScoreboardUpdates.frequency", 30);
 			long ticks2=minutes2*1200L;
 			
-			new ScoreboardWebhookTask(this, scoreboardObjectiveName).runTaskTimer(this, 100L, ticks2);
+			new ScoreboardWebhookTask(this, scoreboardObjectiveName, scoreboardMessageTitle).runTaskTimer(this, 100L, ticks2);
 		}
 		
 		
