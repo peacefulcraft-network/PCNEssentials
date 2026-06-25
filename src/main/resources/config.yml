@@ -63,3 +63,11 @@ eventScoreboardUpdates:
   messageTitle: "🏆 Wood-chopping Standings 🌲🪓"
   frequency: 30 #minutes ?
   
+# Custom Welcome Rewards Configuration
+payout-amount: 50.0
+cooldown-seconds: 30
+keywords:
+  - "welcome"
+  - "welcome back"
+  - "wb"
+  

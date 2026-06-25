@@ -6,6 +6,9 @@ import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.RegisteredServiceProvider;
+
+import net.milkbowl.vault.economy.Economy;
 
 import net.md_5.bungee.api.ChatColor;
 import net.peacefulcraft.rtp.collectionevent.CollectionEvent;
@@ -35,13 +38,15 @@ import net.peacefulcraft.rtp.listeners.TurkeyListener;
 import net.peacefulcraft.rtp.scoreboard.ChallengeScoreboard;
 public class PCNEssentials extends JavaPlugin{
 
-	public static final String release = "0.0.10";
+	public static final String release = "0.0.11";
 
 	private static PCNEssentials p;
 		public static PCNEssentials getPluginInstance() { return p; }
 		
 	private static Configuration c;
 		public static Configuration getPluginConfig() { return c; }
+	
+	private static Economy econ=null;
 
 	public static final String messagePrefix = ChatColor.BLUE + "[" + ChatColor.GREEN  + "PCN" + ChatColor.BLUE + "] " + ChatColor.RESET + ChatColor.GRAY;
 
@@ -95,6 +100,7 @@ public class PCNEssentials extends JavaPlugin{
 		getServer().getPluginManager().registerEvents(new ShulkerDropsListener(), this);
 		getServer().getPluginManager().registerEvents(new DragonDropsListener(), this);
 		getServer().getPluginManager().registerEvents(new GlobalNick(), this);
+		
         
         //let console know
         getLogger().info("GlobalNickModule has been synchronized with LuckPerms!");
@@ -131,7 +137,17 @@ public class PCNEssentials extends JavaPlugin{
 			new ScoreboardWebhookTask(this, scoreboardObjectiveName, scoreboardMessageTitle).runTaskTimer(this, 100L, ticks2);
 		}
 		
-		
+		// 4. set up economy and register wb rewards listener		
+		if (!setupEconomy()) {
+            getLogger().severe("Disabled due to no Vault dependency found!");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+        
+        getServer().getPluginManager().registerEvents(
+            new wbListener(this, getConfig().getDouble("payout-amount", 50.0), getConfig().getStringList("keywords")), 
+            this
+        );
 
 		UpdateCheck updateCheck = new UpdateCheck();
 		// On a healthy server, this checks every hour
@@ -259,4 +275,20 @@ public class PCNEssentials extends JavaPlugin{
 	public void logNotice(String message) {
 		this.getLogger().log(Level.INFO, ChatColor.GREEN + "[" + ChatColor.BLUE + "PCN" + ChatColor.GREEN + "]" + ChatColor.RESET + message);
 	}
+	
+	private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        econ = rsp.getProvider();
+        return econ != null;
+    }
+
+    public Economy getEconomy() {
+        return econ;
+    }
 }
