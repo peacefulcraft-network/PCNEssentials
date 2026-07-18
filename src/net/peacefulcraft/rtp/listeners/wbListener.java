@@ -7,6 +7,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import net.ess3.api.events.AfkStatusChangeEvent;
+
 import java.util.*;
 
 public class wbListener implements Listener {
@@ -31,6 +33,16 @@ public class wbListener implements Listener {
         recentJoins.put(event.getPlayer().getUniqueId(), System.currentTimeMillis());
         rewardedPlayers.clear(); 
     }
+    
+    @EventHandler
+	public void onPlayerAfkChange(AfkStatusChangeEvent event) {
+		// We only care when a player is COMING BACK from AFK (value goes from true to false)
+		if (!event.getValue()) { 
+			UUID uuid = event.getAffected().getBase().getUniqueId();
+			recentJoins.put(uuid, System.currentTimeMillis());
+			rewardedPlayers.clear();
+		}
+	}
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
