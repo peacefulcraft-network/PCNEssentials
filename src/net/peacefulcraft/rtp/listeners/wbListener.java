@@ -12,8 +12,8 @@ import java.util.*;
 public class wbListener implements Listener {
 
     private final PCNEssentials plugin;
-    private final double payoutAmount;
-    private final List<String> keywords;
+    private double payoutAmount;
+    private List<String> keywords;
     
     private final Map<UUID, Long> recentJoins = new HashMap<>();
     private final Set<UUID> rewardedPlayers = new HashSet<>();
@@ -22,6 +22,12 @@ public class wbListener implements Listener {
     // Updated constructor to receive config arguments directly
     public wbListener(PCNEssentials plugin, double payoutAmount, List<String> keywords) {
         this.plugin = plugin;
+        this.payoutAmount = payoutAmount;
+        this.keywords = keywords;
+    }
+
+    /** Re-apply config values in place so /pcn-reload takes effect without re-registering the listener. */
+    public void updateConfig(double payoutAmount, List<String> keywords) {
         this.payoutAmount = payoutAmount;
         this.keywords = keywords;
     }

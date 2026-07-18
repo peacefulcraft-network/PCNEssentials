@@ -5,8 +5,10 @@ import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.scheduler.BukkitTask;
 
 import net.milkbowl.vault.economy.Economy;
 
@@ -59,6 +61,13 @@ public class PCNEssentials extends JavaPlugin{
 		
 	public static CollectionEvent collectionEvent;
 		public static CollectionEvent getCollectionEvent() { return collectionEvent; }
+
+	private wbListener wbRewards;
+		public wbListener getWbRewards() { return wbRewards; }
+
+	// Handles for config-driven timers so they can be cancelled/rescheduled on reload
+	private BukkitTask plotUpdateTask;
+	private BukkitTask scoreboardTask;
 
 	public void onEnable() {
 		p = this;
@@ -113,41 +122,18 @@ public class PCNEssentials extends JavaPlugin{
 			getLogger().warning("Duels not found! Duel notifications will not be sent.");
 		}
 
-		// 2. plot updates, only if that's installed
-		if (getServer().getPluginManager().isPluginEnabled("PlotSquared")) {
-			// Only run the plot timer if PlotSquared is actually on the server
-			if (this.getConfig().getBoolean("plotBuildCompUpdates.enabled", false)) {
-				int minutes = getConfig().getInt("plotBuildCompUpdates.frequency", 60);
-				long ticks = minutes * 1200L;
-				
-				new PlotUpdateTask(this).runTaskTimerAsynchronously(this, 20L, ticks);
-			}
-		} else {
-			getLogger().warning("PlotSquared not found! Plot updates will not be sent.");
-		}
-		
-		// 3. passing minecraft scoreboard standings to discord for events
-		if (this.getConfig().getBoolean("eventScoreboardUpdates.enabled", false)) {
-			String scoreboardObjectiveName=getConfig().getString("eventScoreboardUpdates.objectiveName", "scoreboard");
-			String scoreboardMessageTitle=getConfig().getString("eventScoreboardUpdates.messageTitle", "🏆 Event Scoreboard Standings");
-			
-			int minutes2=getConfig().getInt("eventScoreboardUpdates.frequency", 30);
-			long ticks2=minutes2*1200L;
-			
-			new ScoreboardWebhookTask(this, scoreboardObjectiveName, scoreboardMessageTitle).runTaskTimer(this, 100L, ticks2);
-		}
-		
-		// 4. set up economy and register wb rewards listener		
+		// 2 & 3. config-driven timers (plot updates + event scoreboard webhook)
+		startScheduledTasks();
+
+		// 4. set up economy and register wb rewards listener
 		if (!setupEconomy()) {
             getLogger().severe("Disabled due to no Vault dependency found!");
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
-        
-        getServer().getPluginManager().registerEvents(
-            new wbListener(this, getConfig().getDouble("payout-amount", 50.0), getConfig().getStringList("keywords")), 
-            this
-        );
+
+        wbRewards = new wbListener(this, getConfig().getDouble("payout-amount", 50.0), getConfig().getStringList("keywords"));
+        getServer().getPluginManager().registerEvents(wbRewards, this);
 
 		UpdateCheck updateCheck = new UpdateCheck();
 		// On a healthy server, this checks every hour
@@ -158,6 +144,35 @@ public class PCNEssentials extends JavaPlugin{
 		disableCompetition();
 
 		this.getServer().getScheduler().cancelTasks(this);
+	}
+
+	/**
+	 * Cancels any running config-driven timers, then (re)schedules the enabled ones from config.
+	 * Safe to call repeatedly (startup and /pcn-reload) — it will not double-schedule.
+	 */
+	public void startScheduledTasks() {
+		if (plotUpdateTask != null) { plotUpdateTask.cancel(); plotUpdateTask = null; }
+		if (scoreboardTask != null) { scoreboardTask.cancel(); scoreboardTask = null; }
+
+		FileConfiguration cfg = getConfig();
+
+		// Plot build competition updates, only if PlotSquared is installed
+		if (getServer().getPluginManager().isPluginEnabled("PlotSquared")) {
+			if (cfg.getBoolean("plotBuildCompUpdates.enabled", false)) {
+				long ticks = cfg.getInt("plotBuildCompUpdates.frequency", 60) * 1200L;
+				plotUpdateTask = new PlotUpdateTask(this).runTaskTimerAsynchronously(this, 20L, ticks);
+			}
+		} else {
+			getLogger().warning("PlotSquared not found! Plot updates will not be sent.");
+		}
+
+		// Passing minecraft scoreboard standings to discord for events
+		if (cfg.getBoolean("eventScoreboardUpdates.enabled", false)) {
+			String objectiveName = cfg.getString("eventScoreboardUpdates.objectiveName", "scoreboard");
+			String messageTitle = cfg.getString("eventScoreboardUpdates.messageTitle", "🏆 Event Scoreboard Standings");
+			long ticks = cfg.getInt("eventScoreboardUpdates.frequency", 30) * 1200L;
+			scoreboardTask = new ScoreboardWebhookTask(this, objectiveName, messageTitle).runTaskTimer(this, 100L, ticks);
+		}
 	}
 
 	/**
