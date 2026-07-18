@@ -18,7 +18,7 @@ jobs:
       run: mvn -B package --file pom.xml
     - name: Upload compiled Jar file
       run: mkdir staging && cp target/*.jar staging
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v4
       with:
         name: PCNEssentials
         path: staging
