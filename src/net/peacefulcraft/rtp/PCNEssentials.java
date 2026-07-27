@@ -26,6 +26,7 @@ import net.peacefulcraft.rtp.commands.RTPTC;
 import net.peacefulcraft.rtp.commands.Reload;
 import net.peacefulcraft.rtp.commands.ShowChallengeScoreboard;
 import net.peacefulcraft.rtp.commands.ToggleDrops;
+import net.peacefulcraft.rtp.commands.TimeVoteCommand;
 import net.peacefulcraft.rtp.configuration.Configuration;
 import net.peacefulcraft.rtp.listeners.BlockBreakListener;
 import net.peacefulcraft.rtp.listeners.CowsBredAndKilledListener;
@@ -59,6 +60,8 @@ public class PCNEssentials extends JavaPlugin{
 		
 	public static CollectionEvent collectionEvent;
 		public static CollectionEvent getCollectionEvent() { return collectionEvent; }
+
+	private TimeVoteCommand timeVoteCommand;
 
 	public void onEnable() {
 		p = this;
@@ -94,6 +97,11 @@ public class PCNEssentials extends JavaPlugin{
 		this.getCommand("hug").setExecutor(new Hug());
 		this.getCommand("pcncompetition").setExecutor(new CompetitionCommands());
 		this.getCommand("barrier").setExecutor(new BarrierCommand());
+
+		timeVoteCommand = new TimeVoteCommand(this);
+		this.getCommand("voting").setExecutor(timeVoteCommand);
+		this.getCommand("voting").setTabCompleter(timeVoteCommand);
+		getServer().getPluginManager().registerEvents(timeVoteCommand, this);
 
 		//Registering listeners
 		getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);
@@ -155,6 +163,9 @@ public class PCNEssentials extends JavaPlugin{
 	}
 	
 	public void onDisable() {
+		if (timeVoteCommand != null) {
+			timeVoteCommand.shutdown();
+		}
 		disableCompetition();
 
 		this.getServer().getScheduler().cancelTasks(this);
