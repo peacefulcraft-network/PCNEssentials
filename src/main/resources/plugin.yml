@@ -50,3 +50,6 @@ commands:
       description: Creative give barrier
       usage: /<command>
       permission: pcn.barrier
+    voting:
+      description: Start or participate in a day or night vote in your current world
+      usage: /<command> <day|night>
