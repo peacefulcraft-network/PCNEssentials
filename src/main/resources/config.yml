@@ -43,6 +43,11 @@ ender_dragon_drops:
 
 barrier:
   enabled: true
+
+# day/night voting
+time-voting:
+  voting-time: 60 # seconds
+  excluded-worlds: []
   
 
 # Paste your live Discord webhook URL below. Keep this secret!
