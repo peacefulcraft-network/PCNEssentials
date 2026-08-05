@@ -39,7 +39,7 @@ import net.peacefulcraft.rtp.listeners.TurkeyListener;
 import net.peacefulcraft.rtp.scoreboard.ChallengeScoreboard;
 public class PCNEssentials extends JavaPlugin{
 
-	public static final String release = "0.0.11";
+	public static final String release = "0.0.12";
 
 	private static PCNEssentials p;
 		public static PCNEssentials getPluginInstance() { return p; }
