@@ -78,7 +78,20 @@ public class Configuration {
     ensureIntegrity();
   }
 
+  /**
+   * Re-point this configuration layer at a freshly reloaded FileConfiguration and rebuild all
+   * derived state (RTP ranges, defaults, integrity). Call after {@code plugin.reloadConfig()}
+   * so that all static getters and the cached range map reflect the on-disk file.
+   */
+  public static void reload(FileConfiguration cfg) {
+    Configuration.c = cfg;
+    cfg.setDefaults(defaultConfiguration);
+    loadComplexValues();
+    ensureIntegrity();
+  }
+
   private static void loadComplexValues() {
+    rtpRanges.clear();
     for(String range : c.getConfigurationSection("rtp.ranges").getKeys(false)) {
       ConfigurationSection cfgs = c.getConfigurationSection("rtp.ranges." + range);
       if(!cfgs.contains("min")) { continue; }
